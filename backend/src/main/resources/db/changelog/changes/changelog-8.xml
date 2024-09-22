@@ -5,14 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
-    <changeSet author = "revinskaya" id = "12">
+    <changeSet author = "revinskaya" id = "16">
         <sql>
-            INSERT INTO workers(person_id, team_id, person_role)
-            SELECT p.id FROM persons as p
-            WHERE p.nickname = 'kate-revinska',
-            SELECT t.id FROM teams as t
-            WHERE t.name = 'tennisBird',
-            'backend_developer'
+            INSERT INTO tasks(code, title, author_id, status, priority)
+            SELECT 'BACK_123', 'prepare db', w.id, 'open', 'medium'
+            FROM workers AS w
+            JOIN persons AS p ON w.person_id = p.id
+            WHERE p.nickname = 'kate-revinska';
         </sql>
     </changeSet>
 

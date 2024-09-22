@@ -1,20 +1,24 @@
-package org.tennis_bird.core.entities.entities;
+package org.tennis_bird.core.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "persons")
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "first_name", nullable = false)
     private String firstName;
     @Column(name = "last_name", nullable = false)

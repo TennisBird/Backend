@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TennisBirdApplication {
+public class TennisBirdBackendApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TennisBirdApplication.class, args);
+        SpringApplication.run(TennisBirdBackendApplication.class, args);
     }
 }

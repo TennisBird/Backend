@@ -5,43 +5,46 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
-    <changeSet author = "revinskaya" id = "1">
-        <createTable tableName="persons">
+    <changeSet author = "revinskaya" id = "8">
+        <createTable tableName="workers">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="first_name" type="VARCHAR(200)">
+            <column name="person_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_name" type="VARCHAR(200)">
+            <column name="team_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="nickname" type="VARCHAR(200)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="birth_date" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="mail_address" type="VARCHAR(100)">
+            <column name="person_role" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet author="revinskaya" id="2">
-        <createIndex indexName="ix_unique_mail_persons"
-                     tableName="persons"
+    <changeSet author="revinskaya" id = "9">
+        <createIndex indexName="ix_unique_worker"
+                     tableName="workers"
                      unique="true">
-            <column name="mail_address"/>
+            <column name="person_id"/>
+            <column name="team_id"/>
+            <column name="person_role"/>
         </createIndex>
     </changeSet>
 
-    <changeSet author="revinskaya" id="3">
-        <createIndex indexName="ix_unique_nickname_persons"
-                     tableName="persons"
-                     unique="true">
-            <column name="nickname"/>
-        </createIndex>
+    <changeSet author="revinskaya" id="10">
+        <addForeignKeyConstraint baseTableName="workers"
+                                 baseColumnNames="person_id"
+                                 constraintName="fk_workers_person_id"
+                                 referencedTableName="persons"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet author="revinskaya" id="11">
+        <addForeignKeyConstraint baseTableName="workers"
+                                 baseColumnNames="team_id"
+                                 constraintName="fk_workers_team_id"
+                                 referencedTableName="teams"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

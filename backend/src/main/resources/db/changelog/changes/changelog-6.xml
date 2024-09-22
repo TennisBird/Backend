@@ -5,9 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
-    <changeSet author = "revinskaya" id = "7">
+    <changeSet author = "revinskaya" id = "12">
         <sql>
-            INSERT INTO teams(name) VALUES('tennisBird');
+            INSERT INTO workers(person_id, team_id, person_role)
+            SELECT p.id, t.id, 'backend_developer'
+            FROM persons AS p, teams AS t
+            WHERE p.nickname = 'kate-revinska' AND t.name = 'tennisBird';
         </sql>
     </changeSet>
 

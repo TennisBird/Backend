@@ -5,46 +5,48 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
-    <changeSet author = "revinskaya" id = "8">
-        <createTable tableName="workers">
+    <changeSet author = "revinskaya" id = "13">
+        <createTable tableName="tasks">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="person_id" type="BIGINT">
+            <column name="code" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>
-            <column name="team_id" type="BIGINT">
+            <column name="title" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>
-            <column name="person_role" type="VARCHAR(200)">
+            <column name="description" type="VARCHAR(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" defaultValue = "open" type="VARCHAR(200)">
                 <constraints nullable="false"/>
+            </column>
+            <column name="priority" defaultValue = "medium" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="estimate" type="INT">
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet author="revinskaya" id = "9">
-        <createIndex indexName="ix_unique_worker"
-                     tableName="workers"
+    <changeSet author="revinskaya" id = "14">
+        <createIndex indexName="ix_unique_code_tasks"
+                     tableName="tasks"
                      unique="true">
-            <column name="person_id"/>
-            <column name="team_id"/>
-            <column name="person_role"/>
+            <column name="code"/>
         </createIndex>
     </changeSet>
 
-    <changeSet author="javaguru" id="10">
-        <addForeignKeyConstraint baseTableName="workers"
-                                 baseColumnNames="person_id"
-                                 constraintName="fk_workers_person_id"
-                                 referencedTableName="persons"
-                                 referencedColumnNames="id"/>
-    </changeSet>
-
-    <changeSet author="javaguru" id="11">
-        <addForeignKeyConstraint baseTableName="workers"
-                                 baseColumnNames="task_id"
-                                 constraintName="fk_workers_task_id"
-                                 referencedTableName="tasks"
+    <changeSet author="revinskaya" id="15">
+        <addForeignKeyConstraint baseTableName="tasks"
+                                 baseColumnNames="author_id"
+                                 constraintName="fk_tasks_author_id"
+                                 referencedTableName="workers"
                                  referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

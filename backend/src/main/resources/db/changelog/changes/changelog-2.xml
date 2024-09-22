@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author = "revinskaya" id = "4">
+        <sql>
+            INSERT INTO persons(first_name, last_name, nickname, birth_date, mail_address)
+            VALUES('Ekaterina', 'Revinskaya', 'kate-revinska', '2005-08-03', 'katierevinska05@gmail.com');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
