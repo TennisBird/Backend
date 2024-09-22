@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author = "revinskaya" id = "13">
+        <createTable tableName="tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="estimate" type="INT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="javaguru" id="14">
+        <addForeignKeyConstraint baseTableName="tasks"
+                                 baseColumnNames="author_id"
+                                 constraintName="fk_tasks_author_id"
+                                 referencedTableName="persons"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
