@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author = "revinskaya" id = "17">
+        <createTable tableName="worker_tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="worker_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="worker_role" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="revinskaya" id="18">
+        <addForeignKeyConstraint baseTableName="worker_tasks"
+                                 baseColumnNames="worker_id"
+                                 constraintName="fk_worker_tasks_worker_id"
+                                 referencedTableName="workers"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="revinskaya" id="19">
+        <addForeignKeyConstraint baseTableName="worker_tasks"
+                                 baseColumnNames="task_id"
+                                 constraintName="fk_worker_tasks_task_id"
+                                 referencedTableName="tasks"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
