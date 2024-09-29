@@ -7,8 +7,14 @@
 
     <changeSet author = "revinskaya" id = "1">
         <createTable tableName="persons">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column name="uuid" type="VARCHAR(200)">
                 <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(200)">
+                <constraints nullable="false"/>
             </column>
             <column name="first_name" type="VARCHAR(200)">
                 <constraints nullable="false"/>
@@ -16,7 +22,7 @@
             <column name="last_name" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>
-            <column name="nickname" type="VARCHAR(200)">
+            <column name="username" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>
             <column name="birth_date" type="TIMESTAMP">
@@ -25,22 +31,25 @@
             <column name="mail_address" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
+            <column name="telephone_number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
     <changeSet author="revinskaya" id = "2">
-        <createIndex indexName="ix_unique_mail_persons"
+        <createIndex indexName="ix_unique_telephone_number_persons"
                      tableName="persons"
                      unique="true">
-            <column name="mail_address"/>
+            <column name="telephone_number"/>
         </createIndex>
     </changeSet>
 
     <changeSet author="revinskaya" id = "3">
-        <createIndex indexName="ix_unique_nickname_persons"
+        <createIndex indexName="ix_unique_username_persons"
                      tableName="persons"
                      unique="true">
-            <column name="nickname"/>
+            <column name="username"/>
         </createIndex>
     </changeSet>
 
