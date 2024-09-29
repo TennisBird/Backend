@@ -1,0 +1,170 @@
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 YaBrowser/24.7.0.0 Safari/537.36" version="24.7.16">
+    <diagram name="Страница — 1" id="ifS0kbYv-uaPkqxDa42J">
+        <mxGraphModel dx="1222" dy="1679" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-2" value="Менеджер&nbsp;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="570" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-4" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="510" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-5" value="" style="endArrow=none;html=1;rounded=0;entryX=0.209;entryY=0.925;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="BL46Mw4E-TUljWc56BHQ-4" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="70" y="600" as="sourcePoint"/>
+                        <mxPoint x="120" y="550" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-6" value="Создать команду" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="150" y="520" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-10" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="600" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-11" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="70" y="600" as="sourcePoint"/>
+                        <mxPoint x="193.00346331395826" y="617.189363491172" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-13" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="530" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-14" value="" style="endArrow=none;html=1;rounded=0;entryX=0.209;entryY=0.925;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="BL46Mw4E-TUljWc56BHQ-13" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="70" y="600" as="sourcePoint"/>
+                        <mxPoint x="50" y="720" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-15" value="Назначить<div>тим лида</div>" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="220" y="610" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-16" value="Член команды" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="110" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-17" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="170" width="170" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-18" value="" style="endArrow=none;html=1;rounded=0;" parent="1" target="BL46Mw4E-TUljWc56BHQ-17" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="205" y="160" as="sourcePoint"/>
+                        <mxPoint x="279.9999999999999" y="141.25" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-19" value="<div>Назначить</div><div>исполнителя</div><div>задачи</div>" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="310" y="190" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-20" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="90" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-22" value="Изменить статус задачи" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="100" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-23" value="Тим лид" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="350" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-12" value="Добавить<div>члена команды</div>" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="540" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-33" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="150" y="400" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-34" value="Изменить роль члена команды" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="170" y="420" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-35" value="" style="endArrow=none;html=1;rounded=0;entryX=0.199;entryY=0.123;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="BL46Mw4E-TUljWc56BHQ-23" target="BL46Mw4E-TUljWc56BHQ-33" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="150" y="520" as="sourcePoint"/>
+                        <mxPoint x="200" y="470" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-38" value="" style="endArrow=none;html=1;rounded=0;entryX=0.258;entryY=0.916;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="BL46Mw4E-TUljWc56BHQ-20" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="200" y="160" as="sourcePoint"/>
+                        <mxPoint x="250" y="110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-39" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="197" y="260" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="BL46Mw4E-TUljWc56BHQ-40" value="<div>Назначить</div><div>наблюдателя&nbsp;<br></div><span style="background-color: initial;">задачи&nbsp;</span>" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+            <mxGeometry x="230" y="270" width="60" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="BL46Mw4E-TUljWc56BHQ-41" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+            <mxGeometry x="40" y="200" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="BL46Mw4E-TUljWc56BHQ-42" value="Добавить<div>задачу</div>" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+            <mxGeometry x="64" y="210" width="60" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="BL46Mw4E-TUljWc56BHQ-43" value="" style="endArrow=none;html=1;rounded=0;exitX=0.716;exitY=0.046;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" edge="1">
+            <mxGeometry width="50" height="50" relative="1" as="geometry">
+                <mxPoint x="285.91999999999985" y="262.29999999999995" as="sourcePoint"/>
+                <mxPoint x="200" y="160" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="BL46Mw4E-TUljWc56BHQ-44" value="" style="endArrow=none;html=1;rounded=0;exitX=0.304;exitY=0.072;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" target="BL46Mw4E-TUljWc56BHQ-16" edge="1">
+            <mxGeometry width="50" height="50" relative="1" as="geometry">
+                <mxPoint x="66.48000000000002" y="203.5999999999999" as="sourcePoint"/>
+                <mxPoint x="160" y="140" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-1" value="Гость" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+            <mxGeometry x="80" y="-220" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-2" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+            <mxGeometry x="160" y="-280" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-3" value="" style="endArrow=none;html=1;rounded=0;entryX=0.209;entryY=0.925;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="d_L-BFur-0HTFVN-KUmT-2" edge="1">
+            <mxGeometry width="50" height="50" relative="1" as="geometry">
+                <mxPoint x="110" y="-190" as="sourcePoint"/>
+                <mxPoint x="160" y="-240" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-4" value="Регистрация" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+            <mxGeometry x="190" y="-270" width="60" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-5" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+            <mxGeometry x="230" y="-190" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-6" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+            <mxGeometry width="50" height="50" relative="1" as="geometry">
+                <mxPoint x="110" y="-190" as="sourcePoint"/>
+                <mxPoint x="233.00346331395826" y="-172.810636508828" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-8" value="Аутентификация" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+            <mxGeometry x="260" y="-180" width="60" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-9" value="Пользователь" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+            <mxGeometry x="80" y="-20" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-10" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+            <mxGeometry x="160" y="-80" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-11" value="" style="endArrow=none;html=1;rounded=0;entryX=0.209;entryY=0.925;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="d_L-BFur-0HTFVN-KUmT-10" edge="1">
+            <mxGeometry width="50" height="50" relative="1" as="geometry">
+                <mxPoint x="110" y="10" as="sourcePoint"/>
+                <mxPoint x="160" y="-40" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-12" value="Выход из учетной записи" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+            <mxGeometry x="190" y="-70" width="60" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-13" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+            <mxGeometry width="50" height="50" relative="1" as="geometry">
+                <mxPoint x="110" y="10" as="sourcePoint"/>
+                <mxPoint x="233.00346331395826" y="27.189363491172003" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-15" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+            <mxGeometry x="230" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_L-BFur-0HTFVN-KUmT-14" value="Работа с профилем" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+            <mxGeometry x="260" y="10" width="60" height="30" as="geometry"/>
+        </mxCell>
+    </root>
+</mxGraphModel>
+        </diagram>
+        </mxfile>
