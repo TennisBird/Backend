@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author = "revinskaya" id = "16">
+        <sql>
+            INSERT INTO tasks(code, title, author_id, status, priority)
+            SELECT 'BACK_123', 'prepare db', w.id, 'open', 'medium'
+            FROM workers AS w
+            JOIN persons AS p ON w.person_id = p.id
+            WHERE p.nickname = 'kate-revinska';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
