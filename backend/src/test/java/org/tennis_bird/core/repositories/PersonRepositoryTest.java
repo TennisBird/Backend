@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Date;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
@@ -42,8 +43,7 @@ public class PersonRepositoryTest {
         personRepository.save(person);
         Assertions.assertTrue(personRepository.findById(personUuid).isPresent());
 
-        person.setUsername("Kate");
-        personRepository.updateOrInsert(person);
+        Assertions.assertEquals(personRepository.changeUsername("Kate", personUuid), 1);
         Assertions.assertEquals(personRepository.findById(personUuid).get().getUsername(), "Kate");
 
         personRepository.delete(person);
