@@ -11,32 +11,40 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.repositories.PersonRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@Component
 @Transactional
 public class PersonService {
     @Autowired
     PersonRepository repository;
     private static final Logger logger = LogManager.getLogger(PersonService.class.getName());
-    public void create(PersonEntity person) {
+    public PersonEntity create(PersonEntity person) {
         logger.info("create person with uuid " + person.getUuid());
-        repository.save(person);
+        return repository.save(person);
     }
 
     public Optional<PersonEntity> find(UUID personUuid) {
         return repository.findById(personUuid);
     }
 
-    public PersonEntity updateUsername(PersonEntity person, String newUsername) {
-        logger.info("update person with uuid " + person.getUuid() + "set username " + person.getUsername());
-        person.setUsername(newUsername);
-        return repository.updateOrInsert(person);
+    public List<PersonEntity> findAll() {
+        return repository.findAll();
     }
 
-    public void delete(PersonEntity person) {
-        logger.info("delete person with uuid " + person.getUuid());
-        repository.delete(person);
+    public void updateUsername(PersonEntity person, String newUsername) {
+        logger.info("update person with uuid " + person.getUuid() + "set username " + person.getUsername());
+        repository.changeUsername(newUsername, person.getUuid());
+    }
+
+    public boolean delete(UUID uuid) {
+        logger.info("delete person with uuid " + uuid);
+        if (repository.existsById(uuid)) {
+            repository.deleteById(uuid);
+            return true;
+        }
+        return false;
     }
 }

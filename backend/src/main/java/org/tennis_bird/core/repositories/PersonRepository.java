@@ -15,7 +15,10 @@ import java.util.UUID;
 public interface PersonRepository extends JpaRepository<PersonEntity, UUID> {
 
     @Transactional
-    default PersonEntity updateOrInsert(PersonEntity person) {
-        return save(person);
-    }
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE PersonEntity p SET p.username = :username WHERE p.uuid = :uuid")
+    int changeUsername(
+            @Param("username") String username,
+            @Param("uuid") UUID uuid
+    );
 }
