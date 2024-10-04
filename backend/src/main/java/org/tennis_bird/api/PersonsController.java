@@ -53,4 +53,9 @@ public class PersonsController {
         PersonEntity person = personService.find(uuid).get();
         personService.updateUsername(person, username);
     }
+
+    //TODO
+    /*
+    update all other fields
+     */
 }

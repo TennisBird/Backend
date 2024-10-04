@@ -5,10 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.tennis_bird.core.entities.PersonEntity;
-import org.tennis_bird.core.entities.TaskEntity;
-import org.tennis_bird.core.entities.TeamEntity;
-import org.tennis_bird.core.entities.WorkerEntity;
+import org.tennis_bird.core.entities.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -26,6 +23,8 @@ public class TestRepositorySupport {
     private WorkerRepository workerRepository;
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private WorkerTaskRepository workerTaskRepository;
 
     protected PersonEntity savePersonEntity() {
         PersonEntity person = new PersonEntity();
@@ -41,15 +40,13 @@ public class TestRepositorySupport {
         person.setBirthDate(Date.from(
                 LocalDate.now().minusYears(18).atStartOfDay(ZoneId.systemDefault()).toInstant()
         ));
-        personRepository.save(person);
-        return person;
+        return personRepository.save(person);
     }
 
     protected TeamEntity saveTeamEntity() {
         TeamEntity team = new TeamEntity();
         team.setName("name");
-        teamRepository.save(team);
-        return team;
+        return teamRepository.save(team);
     }
 
     protected WorkerEntity saveWorkerEntity() {
@@ -59,15 +56,21 @@ public class TestRepositorySupport {
         worker.setTeam(team);
         worker.setPerson(person);
         worker.setPersonRole("role");
-        workerRepository.save(worker);
-        return worker;
+        return workerRepository.save(worker);
     }
 
     protected TaskEntity saveTaskEntity() {
         TaskEntity task = new TaskEntity();
         task.setCode("DB-001");
         task.setTitle("create schema");
-        taskRepository.save(task);
-        return task;
+        return taskRepository.save(task);
+    }
+
+    protected WorkerTaskEntity saveWorkerTaskEntity() {
+        WorkerTaskEntity workerTask = new WorkerTaskEntity();
+        workerTask.setTask(saveTaskEntity());
+        workerTask.setWorker(saveWorkerEntity());
+        workerTask.setWorkerRole("role");
+        return workerTaskRepository.save(workerTask);
     }
 }

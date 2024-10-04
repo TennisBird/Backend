@@ -5,14 +5,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.tennis_bird.core.entities.PersonEntity;
-import org.tennis_bird.core.entities.TaskEntity;
-import org.tennis_bird.core.entities.TeamEntity;
-import org.tennis_bird.core.entities.WorkerEntity;
+import org.tennis_bird.core.entities.*;
 import org.tennis_bird.core.services.TaskService;
 import org.tennis_bird.core.services.TeamService;
 import org.tennis_bird.core.services.WorkerService;
+import org.tennis_bird.core.services.WorkerTaskService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,6 +20,8 @@ public class TaskController {
     TaskService taskService;
     @Autowired
     WorkerService workerService;
+    @Autowired
+    WorkerTaskService workerTaskService;
     private static final Logger logger = LogManager.getLogger(TaskController.class.getName());
     @PostMapping(path = "/task/",
             consumes = "application/json",
@@ -53,6 +54,15 @@ public class TaskController {
     ) {
         logger.info(code, authorId);
         WorkerEntity author = workerService.find(authorId).get();
-        taskService.setAuthor(code, author);
+        workerTaskService.setAuthor(code, author);
+    }
+
+    @GetMapping(path = "/task/{code}/author",
+            produces = "application/json")
+    public List<WorkerEntity> getAuthors(
+            @PathVariable(value = "code") String code
+    ) {
+        logger.info(code, "get authors");
+        return workerTaskService.getAuthorsForTask(code);
     }
 }

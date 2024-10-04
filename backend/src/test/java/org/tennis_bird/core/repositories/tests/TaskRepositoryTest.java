@@ -46,17 +46,10 @@ public class TaskRepositoryTest extends TestRepositorySupport {
         Assertions.assertEquals(taskRepository.addDescription(task.getCode(), newDescription), 1);
         Assertions.assertEquals(taskRepository.findById(task.getId()).get().getDescription(), newDescription);
     }
+    //TODO
     /*
     private String status = "open";
     private String priority = "medium";
     private int estimate;
  */
-    @Test
-    public void testSetAuthor() {
-        TaskEntity task = saveTaskEntity();
-
-        WorkerEntity worker = saveWorkerEntity();
-        Assertions.assertEquals(taskRepository.setAuthor(task.getCode(), worker), 1);
-        Assertions.assertEquals(taskRepository.findById(task.getId()).get().getAuthor().getId(), worker.getId());
-    }
 }

@@ -41,9 +41,4 @@ public class TaskService {
         }
         return false;
     }
-
-    public void setAuthor(String taskCode, WorkerEntity worker) {
-        logger.info("set worker with id " + worker.getId() + " as author to task with task code " + taskCode);
-        repository.setAuthor(taskCode, worker);
-    }
 }

@@ -24,9 +24,6 @@ public class TaskEntity {
     private String title;
     @Column(name = "description")
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private WorkerEntity author;
     @Column(name = "status", nullable = false)
     private String status = "open";
     @Column(name = "priority", nullable = false)
