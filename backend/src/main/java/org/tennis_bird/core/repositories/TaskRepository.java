@@ -13,33 +13,49 @@ import javax.websocket.server.PathParam;
 import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
-    @Modifying
+
+    Optional<TaskEntity> findByCode(@Param("code") String code);
+
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE TaskEntity t " +
+            "SET t.title = :title " +
+            "WHERE t.code = :code")
+    int changeTitle(@Param("code") String code, @Param("title")  String title);
+
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE TaskEntity t " +
             "SET t.description = :description " +
             "WHERE t.code = :code")
     int addDescription(@Param("code") String code, @Param("description")  String description);
 
-    @Modifying
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE TaskEntity t " +
-            "SET t.author = :author_id " +
+            "SET t.author = :author " +
             "WHERE t.code = :code")
-    int setAuthor(@Param("code") String code, @Param("author_id") Long authorId);
+    int setAuthor(@Param("code") String code, @Param("author") WorkerEntity worker);
 
-    @Modifying
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE TaskEntity t " +
             "SET t.status = :status " +
             "WHERE t.code = :code")
     int changeStatus(@Param("code") String code, @Param("status") String status);
 
-    @Modifying
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE TaskEntity t " +
             "SET t.priority = :priority " +
             "WHERE t.code = :code")
     int changePriority(@Param("code") String code, @Param("priority") String priority);
 
-    @Modifying
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE TaskEntity t " +
             "SET t.estimate = :estimate " +
             "WHERE t.code = :code")
     int setEstimate(@Param("code") String code, @Param("estimate") int estimate);
+
 }

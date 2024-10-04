@@ -19,7 +19,7 @@ import java.util.UUID;
 public class TeamService {
     @Autowired
     TeamRepository repository;
-    private static final Logger logger = LogManager.getLogger(PersonService.class.getName());
+    private static final Logger logger = LogManager.getLogger(TeamService.class.getName());
     public TeamEntity create(TeamEntity team) {
         logger.info("create team with id " + team.getId());
         return repository.save(team);

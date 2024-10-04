@@ -16,7 +16,7 @@ import java.util.Optional;
 public class WorkerService {
     @Autowired
     WorkerRepository repository;
-    private static final Logger logger = LogManager.getLogger(PersonService.class.getName());
+    private static final Logger logger = LogManager.getLogger(WorkerService.class.getName());
     public WorkerEntity create(WorkerEntity worker) {
         logger.info("create team with id " + worker.getId());
         return repository.save(worker);

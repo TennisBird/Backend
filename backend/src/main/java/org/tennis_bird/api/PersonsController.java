@@ -46,11 +46,11 @@ public class PersonsController {
     @PostMapping(path = "/{uuid}/username",
             produces = "application/json")
     public void updateUsername(
-            @PathVariable(value = "uuid") UUID uuid, @RequestParam(value = "username") String username
+            @PathVariable(value = "uuid") UUID uuid,
+            @RequestParam(value = "username") String username
     ) {
         logger.info(username);
         PersonEntity person = personService.find(uuid).get();
         personService.updateUsername(person, username);
     }
-
 }

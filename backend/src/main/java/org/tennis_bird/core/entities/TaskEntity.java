@@ -28,9 +28,9 @@ public class TaskEntity {
     @JoinColumn(name = "author_id")
     private WorkerEntity author;
     @Column(name = "status", nullable = false)
-    private String status;
+    private String status = "open";
     @Column(name = "priority", nullable = false)
-    private String priority;
+    private String priority = "medium";
     @Column(name = "estimate")
     private int estimate;
 }
