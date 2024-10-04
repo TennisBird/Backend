@@ -15,6 +15,6 @@ public interface WorkerTaskRepository extends JpaRepository<WorkerTaskEntity, Lo
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("SELECT wt.worker FROM WorkerTaskEntity wt " +
-            "WHERE wt.task = :task AND wt.workerRole = 'author' ")
-    List<WorkerEntity> findAuthorsOfTask(@Param(value = "task") TaskEntity task);
+            "WHERE wt.task = :task AND wt.workerRole = :role")
+    List<WorkerEntity> findWorkersWithRoleOfTask(@Param(value = "task") TaskEntity task, @Param(value = "role") String role);
 }

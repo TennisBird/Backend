@@ -26,6 +26,7 @@ public class TeamService {
     }
 
     public Optional<TeamEntity> find(Long teamId) {
+        logger.info("find team with id " + teamId);
         return repository.findById(teamId);
     }
 

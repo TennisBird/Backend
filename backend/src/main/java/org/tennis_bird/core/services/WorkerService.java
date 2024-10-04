@@ -18,11 +18,12 @@ public class WorkerService {
     WorkerRepository repository;
     private static final Logger logger = LogManager.getLogger(WorkerService.class.getName());
     public WorkerEntity create(WorkerEntity worker) {
-        logger.info("create team with id " + worker.getId());
+        logger.info("create worker with id " + worker.getId());
         return repository.save(worker);
     }
 
     public Optional<WorkerEntity> find(Long workerId) {
+        logger.info("find worker with id " + workerId);
         return repository.findById(workerId);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.repositories.PersonRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class PersonService {
     }
 
     public Optional<PersonEntity> find(UUID personUuid) {
+        logger.info("find person with uuid " + personUuid);
         return repository.findById(personUuid);
     }
 
@@ -44,7 +46,32 @@ public class PersonService {
     }
 
     public void updateUsername(PersonEntity person, String newUsername) {
-        logger.info("update person with uuid " + person.getUuid() + "set username " + person.getUsername());
+        logger.info("update person with uuid " + person.getUuid() + " set username " + newUsername);
         repository.changeUsername(newUsername, person.getUuid());
+    }
+
+    public void updateFirstName(PersonEntity person, String firstName) {
+        logger.info("update person with uuid " + person.getUuid() + " set firstName " + firstName);
+        repository.changeFirstName(firstName, person.getUuid());
+    }
+
+    public void updateLastName(PersonEntity person, String lastName) {
+        logger.info("update person with uuid " + person.getUuid() + " set lastName " + lastName);
+        repository.changeLastName(lastName, person.getUuid());
+    }
+
+    public void updateBirthDate(PersonEntity person, Date birthDate) {
+        logger.info("update person with uuid " + person.getUuid() + " set birthDate " + birthDate.toString());
+        repository.changeBirthDate(birthDate, person.getUuid());
+    }
+
+    public void updateMailAddress(PersonEntity person, String mailAddress) {
+        logger.info("update person with uuid " + person.getUuid() + " set mailAddress " + mailAddress);
+        repository.changeMailAddress(mailAddress, person.getUuid());
+    }
+
+    public void updateTelephoneNumber(PersonEntity person, String telephoneNumber) {
+        logger.info("update person with uuid " + person.getUuid() + " set telephoneNumber " + telephoneNumber);
+        repository.changeLastName(telephoneNumber, person.getUuid());
     }
 }

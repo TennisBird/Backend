@@ -66,11 +66,11 @@ public class TestRepositorySupport {
         return taskRepository.save(task);
     }
 
-    protected WorkerTaskEntity saveWorkerTaskEntity() {
+    protected WorkerTaskEntity saveWorkerTaskEntity(String role) {
         WorkerTaskEntity workerTask = new WorkerTaskEntity();
         workerTask.setTask(saveTaskEntity());
         workerTask.setWorker(saveWorkerEntity());
-        workerTask.setWorkerRole("role");
+        workerTask.setWorkerRole(role);
         return workerTaskRepository.save(workerTask);
     }
 }

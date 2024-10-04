@@ -5,6 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.tennis_bird.api.data.PersonInfoConverter;
+import org.tennis_bird.api.data.PersonInfoRequest;
+import org.tennis_bird.api.data.PersonInfoResponse;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.PersonService;
 
@@ -56,6 +59,11 @@ public class PersonsController {
 
     //TODO
     /*
-    update all other fields
+    update
+    "first_name" String firstName;
+    "last_name" String lastName;
+    "birth_date" Date birthDate;
+    "mail_address" String mailAddress;
+    "telephone_number" String telephoneNumber;
      */
 }
