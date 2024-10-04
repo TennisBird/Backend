@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WorkerRepository extends JpaRepository<WorkerEntity, Long> {
-    @Modifying
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE WorkerEntity w SET w.personRole = :role WHERE w.id = :id")
     int changeRole(
             @Param("role") String role,

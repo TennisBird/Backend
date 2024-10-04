@@ -34,11 +34,6 @@ public class PersonService {
         return repository.findAll();
     }
 
-    public void updateUsername(PersonEntity person, String newUsername) {
-        logger.info("update person with uuid " + person.getUuid() + "set username " + person.getUsername());
-        repository.changeUsername(newUsername, person.getUuid());
-    }
-
     public boolean delete(UUID uuid) {
         logger.info("delete person with uuid " + uuid);
         if (repository.existsById(uuid)) {
@@ -46,5 +41,10 @@ public class PersonService {
             return true;
         }
         return false;
+    }
+
+    public void updateUsername(PersonEntity person, String newUsername) {
+        logger.info("update person with uuid " + person.getUuid() + "set username " + person.getUsername());
+        repository.changeUsername(newUsername, person.getUuid());
     }
 }
