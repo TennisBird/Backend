@@ -37,7 +37,6 @@ CREATE TABLE tasks (
   code VARCHAR(200) NOT NULL,
   title VARCHAR(200) NOT NULL,
   description VARCHAR(200) NULL,
-  author_id BIGINT NULL,
   status VARCHAR(200) NOT NULL DEFAULT 'open',
   priority VARCHAR(200) NOT NULL DEFAULT 'medium',
   estimate INT NULL,

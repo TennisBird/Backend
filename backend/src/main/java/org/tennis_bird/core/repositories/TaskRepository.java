@@ -33,13 +33,6 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE TaskEntity t " +
-            "SET t.author = :author " +
-            "WHERE t.code = :code")
-    int setAuthor(@Param("code") String code, @Param("author") WorkerEntity worker);
-
-    @Transactional
-    @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("UPDATE TaskEntity t " +
             "SET t.status = :status " +
             "WHERE t.code = :code")
     int changeStatus(@Param("code") String code, @Param("status") String status);
