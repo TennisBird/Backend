@@ -10,11 +10,8 @@ SELECT p.uuid, t.id, 'backend_developer'
 FROM persons AS p, teams AS t
 WHERE p.username = 'kate-revinska' AND t.name = 'tennisBird';
 
-INSERT INTO tasks(code, title, author_id, status, priority)
-SELECT 'BACK_123', 'prepare db', w.id, 'open', 'medium'
-FROM workers AS w
-JOIN persons AS p ON w.person_id = p.uuid
-WHERE p.username = 'kate-revinska';
+INSERT INTO tasks(code, title, status, priority)
+SELECT 'BACK_123', 'prepare db', 'open', 'medium';
 
 INSERT INTO worker_tasks(worker_id, task_id, worker_role)
 SELECT w.id, t.id, 'executor'

@@ -47,22 +47,35 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(path = "/task/{code}/author",
+    @PostMapping(path = "/task/{code}/role/{role}",
             produces = "application/json")
-    public void setAuthor(
-            @PathVariable(value = "code") String code, @RequestParam(value = "author_id") Long authorId
+    public void setWorkerOnTask(
+            @PathVariable(value = "code") String code,
+            @PathVariable(value = "role") String role,
+            @RequestParam(value = "author_id") Long authorId
     ) {
         logger.info(code, authorId);
         WorkerEntity author = workerService.find(authorId).get();
-        workerTaskService.setAuthor(code, author);
+        workerTaskService.setWorkerOnTask(code, author, role);
     }
 
-    @GetMapping(path = "/task/{code}/author",
+    @GetMapping(path = "/task/{code}/role/{role}",
             produces = "application/json")
-    public List<WorkerEntity> getAuthors(
-            @PathVariable(value = "code") String code
+    public List<WorkerEntity> getWorkersWithRoleOnTask(
+            @PathVariable(value = "code") String code,
+            @PathVariable(value = "role") String role
     ) {
         logger.info(code, "get authors");
-        return workerTaskService.getAuthorsForTask(code);
+        return workerTaskService.getWorkersWithRoleForTask(code, role);
     }
+
+    //TODO
+    /*
+    update
+    "title" String title;
+    "description" String description;
+    "status" String status = "open";
+    "priority" String priority = "medium";
+    "estimate" int estimate;
+     */
 }

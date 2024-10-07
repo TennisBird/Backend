@@ -1,4 +1,4 @@
-package org.tennis_bird.api;
+package org.tennis_bird.api.data;
 
 import org.springframework.stereotype.Component;
 import org.tennis_bird.core.entities.PersonEntity;

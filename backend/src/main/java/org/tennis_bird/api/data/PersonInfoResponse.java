@@ -1,4 +1,4 @@
-package org.tennis_bird.api;
+package org.tennis_bird.api.data;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
@@ -7,16 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonInfoRequest {
+public class PersonInfoResponse {
+    @JsonAlias("uuid")
+    private UUID uuid;
     @JsonAlias("login")
     private String login;
-    @JsonAlias("password")
-    private String password;
     @JsonAlias("first_name")
     private String firstName;
     @JsonAlias("last_name")
