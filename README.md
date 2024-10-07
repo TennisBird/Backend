@@ -26,7 +26,7 @@
 [роли](https://github.com/user-attachments/files/17175864/tennis_bird_users_roles.drawio.pdf.drawio.pdf)
 
 ## Схема бд
-[схема бд](https://github.com/user-attachments/files/17175860/tennisBird_schema.drawio.pdf)
+[схема бд](https://github.com/user-attachments/files/17277013/tennis_bird_schema_bd.drawio.pdf)
 
 ## API для управления командами
 
