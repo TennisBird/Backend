@@ -12,7 +12,6 @@ import org.tennis_bird.core.services.PersonService;
 import org.tennis_bird.core.services.TeamService;
 import org.tennis_bird.core.services.WorkerService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -45,12 +44,19 @@ public class WorkerController {
         return workerService.find(id).get();
     }
 
+    @PostMapping(path = "/worker/{id}/role",
+            produces = "application/json")
+    public boolean updateWorkerRole(
+            @PathVariable(value = "id") Long id,
+            @RequestParam(value = "name") String name
+    ) {
+        logger.info(id);
+        return workerService.changeRole(id, name) != 0;
+    }
+
     @DeleteMapping(path = "/worker/{id}", produces = "application/json")
-    public ResponseEntity<Void> deleteWorker(@PathVariable(value = "id") Long id) {
+    public boolean deleteWorker(@PathVariable(value = "id") Long id) {
         logger.info("Attempting to delete team with id: " + id);
-        if (!workerService.delete(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
+       return workerService.delete(id);
     }
 }

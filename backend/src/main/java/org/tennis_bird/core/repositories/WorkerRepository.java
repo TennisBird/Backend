@@ -7,8 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.tennis_bird.core.entities.WorkerEntity;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
 
 public interface WorkerRepository extends JpaRepository<WorkerEntity, Long> {
     @Transactional

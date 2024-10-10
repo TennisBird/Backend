@@ -4,9 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.tennis_bird.core.entities.TeamEntity;
 import org.tennis_bird.core.entities.WorkerEntity;
-import org.tennis_bird.core.repositories.TeamRepository;
 import org.tennis_bird.core.repositories.WorkerRepository;
 
 import java.util.List;
@@ -20,6 +18,11 @@ public class WorkerService {
     public WorkerEntity create(WorkerEntity worker) {
         logger.info("create worker with id " + worker.getId());
         return repository.save(worker);
+    }
+
+    public int changeRole(Long workerId, String role) {
+        logger.info("change role for worker with id " + workerId);
+        return repository.changeRole(role, workerId);
     }
 
     public Optional<WorkerEntity> find(Long workerId) {

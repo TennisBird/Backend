@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class WorkerTaskService {
+public class WorkerOnTaskService {
     @Autowired
     WorkerTaskRepository workerTaskRepository;
     @Autowired
     WorkerRepository workerRepository;
     @Autowired
     TaskRepository taskRepository;
-    private static final Logger logger = LogManager.getLogger(WorkerTaskService.class.getName());
+    private static final Logger logger = LogManager.getLogger(WorkerOnTaskService.class.getName());
     public WorkerTaskEntity create(WorkerTaskEntity workerTask) {
         logger.info("set worker " + workerTask.getWorker().getId() +
                 " on task " + workerTask.getTask().getId() +

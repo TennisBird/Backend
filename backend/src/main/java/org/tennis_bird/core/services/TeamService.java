@@ -5,14 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.entities.TeamEntity;
-import org.tennis_bird.core.repositories.PersonRepository;
 import org.tennis_bird.core.repositories.TeamRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @Transactional
@@ -28,6 +25,11 @@ public class TeamService {
     public Optional<TeamEntity> find(Long teamId) {
         logger.info("find team with id " + teamId);
         return repository.findById(teamId);
+    }
+
+    public int changeName(Long teamId, String name) {
+        logger.info("change team name with id " + teamId);
+        return repository.changeName(name, teamId);
     }
 
     public List<TeamEntity> findAll() {

@@ -2,12 +2,7 @@ package org.tennis_bird.core.repositories.tests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.tennis_bird.core.entities.PersonEntity;
-import org.tennis_bird.core.entities.TeamEntity;
 import org.tennis_bird.core.entities.WorkerEntity;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 import org.tennis_bird.core.repositories.WorkerRepository;

@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.tennis_bird.core.entities.TeamEntity;
 
 import javax.transaction.Transactional;
-import java.util.UUID;
 
 public interface TeamRepository extends JpaRepository<TeamEntity, Long> {
     @Transactional
