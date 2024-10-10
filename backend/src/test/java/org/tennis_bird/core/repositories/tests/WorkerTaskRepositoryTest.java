@@ -3,13 +3,9 @@ package org.tennis_bird.core.repositories.tests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.tennis_bird.core.entities.TaskEntity;
-import org.tennis_bird.core.entities.WorkerEntity;
 import org.tennis_bird.core.entities.WorkerTaskEntity;
-import org.tennis_bird.core.repositories.TaskRepository;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 import org.tennis_bird.core.repositories.WorkerTaskRepository;
-import org.tennis_bird.core.services.WorkerTaskService;
 
 public class WorkerTaskRepositoryTest extends TestRepositorySupport {
     @Autowired

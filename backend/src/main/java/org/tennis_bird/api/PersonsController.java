@@ -11,6 +11,8 @@ import org.tennis_bird.api.data.PersonInfoResponse;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.PersonService;
 
+import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -37,33 +39,37 @@ public class PersonsController {
         return converter.entityToResponse(person);
     }
 
-    @DeleteMapping(path = "/{uuid}", produces = "application/json")
-    public ResponseEntity<Void> deletePerson(@PathVariable(value = "uuid") UUID uuid) {
+    @DeleteMapping(path = "/{uuid}",
+            produces = "application/json")
+    public boolean deletePerson(@PathVariable(value = "uuid") UUID uuid) {
         logger.info("Attempting to delete person with UUID: " + uuid);
-        if (!personService.delete(uuid)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
+        return personService.delete(uuid);
     }
 
-    @PostMapping(path = "/{uuid}/username",
+    @PostMapping(path = "/{uuid}/",
             produces = "application/json")
-    public void updateUsername(
+    public Optional<PersonInfoResponse> updatePerson(
             @PathVariable(value = "uuid") UUID uuid,
-            @RequestParam(value = "username") String username
+            @RequestParam(value = "username") Optional<String> username,
+            @RequestParam(value = "first_name") Optional<String> firstName,
+            @RequestParam(value = "last_name") Optional<String> lastName,
+            @RequestParam(value = "birth_date") Optional<Date> birthDate,
+            @RequestParam(value = "mail_address") Optional<String> mailAddress,
+            @RequestParam(value = "telephone_number") Optional<String> telephoneNumber
     ) {
         logger.info(username);
-        PersonEntity person = personService.find(uuid).get();
-        personService.updateUsername(person, username);
+        Optional<PersonEntity> personO = personService.find(uuid);
+        if (personO.isEmpty()) {
+            return Optional.empty();
+        }
+        PersonEntity person = personO.get();
+        username.ifPresent(person::setUsername);
+        firstName.ifPresent(person::setFirstName);
+        lastName.ifPresent(person::setLastName);
+        birthDate.ifPresent(person::setBirthDate);
+        mailAddress.ifPresent(person::setMailAddress);
+        telephoneNumber.ifPresent(person::setTelephoneNumber);
+        personO = personService.update(person);
+        return personO.map(personEntity -> converter.entityToResponse(personEntity));
     }
-
-    //TODO
-    /*
-    update
-    "first_name" String firstName;
-    "last_name" String lastName;
-    "birth_date" Date birthDate;
-    "mail_address" String mailAddress;
-    "telephone_number" String telephoneNumber;
-     */
 }

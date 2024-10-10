@@ -1,6 +1,5 @@
 package org.tennis_bird.core.repositories;
 
-import org.h2.util.Task;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,7 +13,7 @@ import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class TestRepositorySupport {
+public abstract class TestRepositorySupport {
     @Autowired
     private PersonRepository personRepository;
     @Autowired

@@ -5,12 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.entities.TaskEntity;
-import org.tennis_bird.core.entities.TeamEntity;
-import org.tennis_bird.core.entities.WorkerEntity;
 import org.tennis_bird.core.repositories.TaskRepository;
-import org.tennis_bird.core.repositories.TeamRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +27,15 @@ public class TaskService {
         return repository.findByCode(code);
     }
 
+    public Optional<TaskEntity> update(TaskEntity task) {
+        if (repository.findById(task.getId()).isPresent()) {
+            logger.info("update task " + task);
+            return Optional.of(repository.save(task));
+        }
+        logger.info("try update task but it not exist" + task);
+        return Optional.empty();
+    }
+
     public List<TaskEntity> findAll() {
         return repository.findAll();
     }
@@ -42,30 +47,5 @@ public class TaskService {
             return true;
         }
         return false;
-    }
-
-    public void updateTitle(TaskEntity task, String title) {
-        logger.info("update task with code " + task.getCode() + " set title " + title);
-        repository.changeTitle(task.getCode(), title);
-    }
-
-    public void updateDescription(TaskEntity task, String description) {
-        logger.info("update task with code " + task.getCode() + " set description " + description);
-        repository.addDescription(task.getCode(), description);
-    }
-
-    public void updateStatus(TaskEntity task, String status) {
-        logger.info("update task with code " + task.getCode() + " set status " + status);
-        repository.changeStatus(task.getCode(), status);
-    }
-
-    public void updatePriority(TaskEntity task, String priority) {
-        logger.info("update task with code " + task.getCode() + " set priority " + priority);
-        repository.changePriority(task.getCode(), priority);
-    }
-
-    public void updateEstimate(TaskEntity task, int estimate) {
-        logger.info("update task with code " + task.getCode() + " set estimate " + estimate);
-        repository.setEstimate(task.getCode(), estimate);
     }
 }
