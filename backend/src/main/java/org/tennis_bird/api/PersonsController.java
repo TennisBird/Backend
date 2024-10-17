@@ -49,7 +49,7 @@ public class PersonsController {
         return personService.delete(uuid);
     }
 
-    @PostMapping(path = "/{uuid}/",
+    @PutMapping(path = "/{uuid}/",
             produces = "application/json")
     public Optional<PersonInfoResponse> updatePerson (
             @PathVariable(value = "uuid") UUID uuid,
@@ -58,7 +58,7 @@ public class PersonsController {
             @RequestParam(value = "last_name") Optional<String> lastName,
             @RequestParam(value = "birth_date")
             @DateTimeFormat(pattern = "yyyy-MM-dd")
-            Optional<String> birthDate,
+            Optional<Date> birthDate,
             @RequestParam(value = "mail_address") Optional<String> mailAddress,
             @RequestParam(value = "telephone_number") Optional<String> telephoneNumber
     ) {
@@ -71,13 +71,7 @@ public class PersonsController {
         username.ifPresent(person::setUsername);
         firstName.ifPresent(person::setFirstName);
         lastName.ifPresent(person::setLastName);
-        birthDate.ifPresent(birth -> {
-            try {
-                person.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse(birth));
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        birthDate.ifPresent(person::setBirthDate);
         mailAddress.ifPresent(person::setMailAddress);
         telephoneNumber.ifPresent(person::setTelephoneNumber);
         return personService.update(person).map(personEntity -> converter.entityToResponse(personEntity));

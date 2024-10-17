@@ -45,10 +45,12 @@ public class PersonControllerTests extends ControllersTestSupport {
         JsonNode beforeUpdateResponse = mapper.readTree(getPerson(uuid));
         assertEquals(beforeUpdateResponse.get("firstName").asText(), "Ivan");
         assertEquals(beforeUpdateResponse.get("lastName").asText(), "Ivanov");
-        updatePersonName(uuid);
+        assertEquals(beforeUpdateResponse.get("birthDate").asText(), "2005-10-09");
+        updatePersonNameAndBirthDate(uuid);
         JsonNode afterUpdateResponse = mapper.readTree(getPerson(uuid));
         assertEquals(afterUpdateResponse.get("firstName").asText(), "Vanya");
         assertEquals(afterUpdateResponse.get("lastName").asText(), "Ivanov");
+        assertEquals(afterUpdateResponse.get("birthDate").asText(), "2005-10-10");
     }
 
     private String getPerson(String uuid) throws Exception {
@@ -63,8 +65,8 @@ public class PersonControllerTests extends ControllersTestSupport {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
     }
-    private String updatePersonName(String uuid) throws Exception {
-        return mockMvc.perform(post(String.format("/%s/?first_name=Vanya", uuid))
+    private String updatePersonNameAndBirthDate(String uuid) throws Exception {
+        return mockMvc.perform(put(String.format("/%s/?first_name=Vanya&birth_date=2005-10-10", uuid))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
