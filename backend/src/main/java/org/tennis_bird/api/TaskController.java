@@ -32,27 +32,32 @@ public class TaskController {
 
     @GetMapping(path = "/task/{code}",
             produces = "application/json")
-    public TaskEntity getTask(@PathVariable(value = "code") String code) {
+    public Optional<TaskEntity> getTask(@PathVariable(value = "code") String code) {
         logger.info(code);
-        return taskService.findByCode(code).get();
+        return taskService.findByCode(code);
     }
 
-    @DeleteMapping(path = "/task/{id}", produces = "application/json")
-    public boolean deleteTask(@PathVariable(value = "id") Long id) {
-        logger.info("Attempting to delete task with id: " + id);
-        return taskService.delete(id);
+    @DeleteMapping(path = "/task/{code}", produces = "application/json")
+    public boolean deleteTask(@PathVariable(value = "code") String code) {
+        logger.info("Attempting to delete task with code: " + code);
+        Optional<TaskEntity> task = taskService.findByCode(code);
+        return task.map(taskEntity -> taskService.delete(taskEntity.getId())).orElse(true);
     }
 
     @PostMapping(path = "/task/{code}/role/{role}",
             produces = "application/json")
-    public void setWorkerOnTask(
+    public boolean setWorkerOnTask(
             @PathVariable(value = "code") String code,
             @PathVariable(value = "role") String role,
             @RequestParam(value = "author_id") Long authorId
     ) {
         logger.info(code, authorId);
-        WorkerEntity author = workerService.find(authorId).get();
-        workerOnTaskService.setWorkerOnTask(code, author, role);
+        Optional<WorkerEntity> author = workerService.find(authorId);
+        if (author.isEmpty()) {
+            return false;
+        }
+        workerOnTaskService.setWorkerOnTask(code, author.get(), role);
+        return workerOnTaskService.getWorkersWithRoleForTask(code, role).contains(author.get());
     }
 
     @GetMapping(path = "/task/{code}/role/{role}",

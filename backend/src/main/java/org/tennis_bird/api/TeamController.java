@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.tennis_bird.core.entities.TeamEntity;
 import org.tennis_bird.core.services.TeamService;
 
+import java.util.Optional;
+
 
 @RestController
 public class TeamController {
@@ -24,9 +26,9 @@ public class TeamController {
 
     @GetMapping(path = "/team/{id}",
             produces = "application/json")
-    public TeamEntity getTeam(@PathVariable(value = "id") Long id) {
+    public Optional<TeamEntity> getTeam(@PathVariable(value = "id") Long id) {
         logger.info(id);
-        return teamService.find(id).get();
+        return teamService.find(id);
     }
 
     @PostMapping(path = "/team/{id}/name",
@@ -40,12 +42,8 @@ public class TeamController {
     }
 
     @DeleteMapping(path = "/team/{id}", produces = "application/json")
-    public ResponseEntity<Void> deleteTeam(@PathVariable(value = "id") Long id) {
+    public boolean deleteTeam(@PathVariable(value = "id") Long id) {
         logger.info("Attempting to delete team with id: " + id);
-        if (!teamService.delete(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
+        return teamService.delete(id);
     }
-
 }

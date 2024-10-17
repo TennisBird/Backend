@@ -3,6 +3,7 @@ package org.tennis_bird.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tennis_bird.api.data.PersonInfoConverter;
@@ -11,6 +12,8 @@ import org.tennis_bird.api.data.PersonInfoResponse;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.PersonService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,10 +36,10 @@ public class PersonsController {
 
     @GetMapping(path = "/{uuid}",
             produces = "application/json")
-    public PersonInfoResponse getPerson(@PathVariable(value = "uuid") UUID uuid) {
+    public Optional<PersonInfoResponse> getPerson(@PathVariable(value = "uuid") UUID uuid) {
         logger.info(uuid);
-        PersonEntity person = personService.find(uuid).get();
-        return converter.entityToResponse(person);
+        Optional<PersonEntity> personO = personService.find(uuid);
+        return personO.map(person -> converter.entityToResponse(person));
     }
 
     @DeleteMapping(path = "/{uuid}",
@@ -48,12 +51,14 @@ public class PersonsController {
 
     @PostMapping(path = "/{uuid}/",
             produces = "application/json")
-    public Optional<PersonInfoResponse> updatePerson(
+    public Optional<PersonInfoResponse> updatePerson (
             @PathVariable(value = "uuid") UUID uuid,
             @RequestParam(value = "username") Optional<String> username,
             @RequestParam(value = "first_name") Optional<String> firstName,
             @RequestParam(value = "last_name") Optional<String> lastName,
-            @RequestParam(value = "birth_date") Optional<Date> birthDate,
+            @RequestParam(value = "birth_date")
+            @DateTimeFormat(pattern = "yyyy-MM-dd")
+            Optional<String> birthDate,
             @RequestParam(value = "mail_address") Optional<String> mailAddress,
             @RequestParam(value = "telephone_number") Optional<String> telephoneNumber
     ) {
@@ -66,10 +71,15 @@ public class PersonsController {
         username.ifPresent(person::setUsername);
         firstName.ifPresent(person::setFirstName);
         lastName.ifPresent(person::setLastName);
-        birthDate.ifPresent(person::setBirthDate);
+        birthDate.ifPresent(birth -> {
+            try {
+                person.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse(birth));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
         mailAddress.ifPresent(person::setMailAddress);
         telephoneNumber.ifPresent(person::setTelephoneNumber);
-        personO = personService.update(person);
-        return personO.map(personEntity -> converter.entityToResponse(personEntity));
+        return personService.update(person).map(personEntity -> converter.entityToResponse(personEntity));
     }
 }
