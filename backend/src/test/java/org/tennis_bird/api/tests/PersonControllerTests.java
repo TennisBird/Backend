@@ -1,31 +1,55 @@
 package org.tennis_bird.api.tests;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.tennis_bird.api.ControllersTestSupport;
+import org.tennis_bird.core.repositories.PersonRepository;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 public class PersonControllerTests extends ControllersTestSupport {
-    @Test
-    public void testCreatePersonRequest() throws Exception {
-        equalsJsonFiles("api/create_person_response.json", createPerson());
+    @Autowired
+    private PersonRepository personRepository;
+    private final String PERSON_BODY_FILE_NAME = "api/person/person_test_body_response.json";
+    @BeforeEach
+    public void resetDb() {
+        personRepository.deleteAll();
     }
     @Test
-    public void testRequest() throws Exception {
-        equalsJsonFiles("api/create_person_response.json", getResponse());
+    public void testCreatePerson() throws Exception {
+        equalsJsonFiles(PERSON_BODY_FILE_NAME, createPerson());
     }
-    private String getResponse() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String createResponse = createPerson();
-        String uuid = mapper.readTree(createResponse).get("uuid").asText();
-        return mockMvc.perform(get(String.format("/%s", uuid))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+    @Test
+    public void testGetPerson() throws Exception {
+        String uuid = mapper.readTree(createPerson()).get("uuid").asText();
+        equalsJsonFiles(PERSON_BODY_FILE_NAME, getPerson(uuid));
+    }
+    @Test
+    public void testDeletePerson() throws Exception {
+        String uuid = mapper.readTree(createPerson()).get("uuid").asText();
+        equalsJsonFiles(PERSON_BODY_FILE_NAME, getPerson(uuid));
+
+        assertEquals(getResponse(delete(PERSON_BASE_URL.concat(uuid))), "true");
+        assertEquals(NULL_RESPONSE, getPerson(uuid));
+    }
+    @Test
+    public void testUpdatePerson() throws Exception {
+        String uuid = mapper.readTree(createPerson()).get("uuid").asText();
+        JsonNode beforeUpdateResponse = mapper.readTree(getPerson(uuid));
+        assertEquals(beforeUpdateResponse.get("firstName").asText(), "Ivan");
+        assertEquals(beforeUpdateResponse.get("lastName").asText(), "Ivanov");
+        assertEquals(beforeUpdateResponse.get("birthDate").asText(), "2005-10-09");
+
+        getResponse(put(PERSON_BASE_URL
+                .concat(uuid)
+                .concat("/?first_name=Vanya&birth_date=2005-10-10")));
+
+        JsonNode afterUpdateResponse = mapper.readTree(getPerson(uuid));
+        assertEquals(afterUpdateResponse.get("firstName").asText(), "Vanya");
+        assertEquals(afterUpdateResponse.get("lastName").asText(), "Ivanov");
+        assertEquals(afterUpdateResponse.get("birthDate").asText(), "2005-10-10");
     }
 }

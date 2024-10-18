@@ -25,8 +25,8 @@ CREATE TABLE workers (
   person_id UUID NOT NULL,
   team_id BIGINT NOT NULL,
   person_role VARCHAR(200) NOT NULL,
-  foreign key (person_id) references persons(uuid),
-  foreign key (team_id) references teams(id)
+  foreign key (person_id) references persons(uuid) ON DELETE CASCADE,
+  foreign key (team_id) references teams(id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX ix_unique_worker ON workers(person_id, team_id, person_role);
@@ -48,8 +48,8 @@ CREATE TABLE worker_tasks (
   worker_id BIGINT NOT NULL,
   task_id BIGINT NOT NULL,
   worker_role VARCHAR(200) NOT NULL, --executors observers author
-  foreign key (worker_id) references workers(id),
-  foreign key (task_id) references tasks(id)
+  foreign key (worker_id) references workers(id) ON DELETE CASCADE,
+  foreign key (task_id) references tasks(id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX ix_unique_worker_tasks ON worker_tasks(worker_id, task_id);

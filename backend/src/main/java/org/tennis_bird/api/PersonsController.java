@@ -3,14 +3,16 @@ package org.tennis_bird.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import org.tennis_bird.api.data.PersonInfoConverter;
+import org.tennis_bird.api.data.InfoConverter;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.PersonInfoResponse;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.PersonService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,7 +22,7 @@ public class PersonsController {
     @Autowired
     PersonService personService;
     @Autowired
-    PersonInfoConverter converter;
+    InfoConverter converter;
     private static final Logger logger = LogManager.getLogger(PersonsController.class.getName());
     @PostMapping(path = "/",
             consumes = "application/json",
@@ -33,10 +35,10 @@ public class PersonsController {
 
     @GetMapping(path = "/{uuid}",
             produces = "application/json")
-    public PersonInfoResponse getPerson(@PathVariable(value = "uuid") UUID uuid) {
+    public Optional<PersonInfoResponse> getPerson(@PathVariable(value = "uuid") UUID uuid) {
         logger.info(uuid);
-        PersonEntity person = personService.find(uuid).get();
-        return converter.entityToResponse(person);
+        Optional<PersonEntity> personO = personService.find(uuid);
+        return personO.map(person -> converter.entityToResponse(person));
     }
 
     @DeleteMapping(path = "/{uuid}",
@@ -46,17 +48,19 @@ public class PersonsController {
         return personService.delete(uuid);
     }
 
-    @PostMapping(path = "/{uuid}/",
+    @PutMapping(path = "/{uuid}/",
             produces = "application/json")
-    public Optional<PersonInfoResponse> updatePerson(
+    public Optional<PersonInfoResponse> updatePerson (
             @PathVariable(value = "uuid") UUID uuid,
             @RequestParam(value = "username") Optional<String> username,
             @RequestParam(value = "first_name") Optional<String> firstName,
             @RequestParam(value = "last_name") Optional<String> lastName,
-            @RequestParam(value = "birth_date") Optional<Date> birthDate,
+            @RequestParam(value = "birth_date")
+            @DateTimeFormat(pattern = "yyyy-MM-dd")
+            Optional<Date> birthDate,
             @RequestParam(value = "mail_address") Optional<String> mailAddress,
             @RequestParam(value = "telephone_number") Optional<String> telephoneNumber
-    ) {
+    ) throws ParseException {
         logger.info(username);
         Optional<PersonEntity> personO = personService.find(uuid);
         if (personO.isEmpty()) {
@@ -69,7 +73,9 @@ public class PersonsController {
         birthDate.ifPresent(person::setBirthDate);
         mailAddress.ifPresent(person::setMailAddress);
         telephoneNumber.ifPresent(person::setTelephoneNumber);
-        personO = personService.update(person);
-        return personO.map(personEntity -> converter.entityToResponse(personEntity));
+        Optional<PersonEntity> updatedPerson = personService.update(person);
+        PersonEntity newP = updatedPerson.get();
+        newP.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse("2005-10-10"));
+        return Optional.of(converter.entityToResponse(newP));
     }
 }

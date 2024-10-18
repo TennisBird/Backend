@@ -1,6 +1,7 @@
 package org.tennis_bird.api.data;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ public class PersonInfoResponse {
     private UUID uuid;
     @JsonAlias("login")
     private String login;
+    @JsonAlias("password")
+    private String password;
     @JsonAlias("first_name")
     private String firstName;
     @JsonAlias("last_name")
@@ -25,6 +28,7 @@ public class PersonInfoResponse {
     @JsonAlias("username")
     private String username;
     @JsonAlias("birth_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthDate;
     @JsonAlias("mail_address")
     private String mailAddress;

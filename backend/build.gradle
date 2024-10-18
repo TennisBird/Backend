@@ -29,3 +29,14 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    enabled = true
+    archiveBaseName = 'tennis_bird_backend'
+    archiveVersion = '1.0.0'
+}

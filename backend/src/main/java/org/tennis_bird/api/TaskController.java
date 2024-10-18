@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.tennis_bird.api.data.InfoConverter;
+import org.tennis_bird.api.data.WorkerInfoResponse;
 import org.tennis_bird.core.entities.*;
 import org.tennis_bird.core.services.TaskService;
 import org.tennis_bird.core.services.WorkerOnTaskService;
@@ -21,6 +23,8 @@ public class TaskController {
     WorkerService workerService;
     @Autowired
     WorkerOnTaskService workerOnTaskService;
+    @Autowired
+    InfoConverter converter;
     private static final Logger logger = LogManager.getLogger(TaskController.class.getName());
     @PostMapping(path = "/task/",
             consumes = "application/json",
@@ -32,40 +36,46 @@ public class TaskController {
 
     @GetMapping(path = "/task/{code}",
             produces = "application/json")
-    public TaskEntity getTask(@PathVariable(value = "code") String code) {
+    public Optional<TaskEntity> getTask(@PathVariable(value = "code") String code) {
         logger.info(code);
-        return taskService.findByCode(code).get();
+        return taskService.findByCode(code);
     }
 
-    @DeleteMapping(path = "/task/{id}", produces = "application/json")
-    public boolean deleteTask(@PathVariable(value = "id") Long id) {
-        logger.info("Attempting to delete task with id: " + id);
-        return taskService.delete(id);
+    @DeleteMapping(path = "/task/{code}", produces = "application/json")
+    public boolean deleteTask(@PathVariable(value = "code") String code) {
+        logger.info("Attempting to delete task with code: " + code);
+        Optional<TaskEntity> task = taskService.findByCode(code);
+        return task.map(taskEntity -> taskService.delete(taskEntity.getId())).orElse(true);
     }
 
     @PostMapping(path = "/task/{code}/role/{role}",
             produces = "application/json")
-    public void setWorkerOnTask(
+    public boolean setWorkerOnTask(
             @PathVariable(value = "code") String code,
             @PathVariable(value = "role") String role,
-            @RequestParam(value = "author_id") Long authorId
+            @RequestParam(value = "worker_id") Long authorId
     ) {
         logger.info(code, authorId);
-        WorkerEntity author = workerService.find(authorId).get();
-        workerOnTaskService.setWorkerOnTask(code, author, role);
+        Optional<WorkerEntity> author = workerService.find(authorId);
+        if (author.isEmpty()) {
+            return false;
+        }
+        workerOnTaskService.setWorkerOnTask(code, author.get(), role);
+        return workerOnTaskService.getWorkersWithRoleForTask(code, role).contains(author.get());
     }
 
     @GetMapping(path = "/task/{code}/role/{role}",
             produces = "application/json")
-    public List<WorkerEntity> getWorkersWithRoleOnTask(
+    public List<WorkerInfoResponse> getWorkersWithRoleOnTask(
             @PathVariable(value = "code") String code,
             @PathVariable(value = "role") String role
     ) {
         logger.info(code, "get authors");
-        return workerOnTaskService.getWorkersWithRoleForTask(code, role);
+        return workerOnTaskService.getWorkersWithRoleForTask(code, role).stream()
+                .map(converter::entityToResponse).toList();
     }
 
-    @PostMapping(path = "/task/{code}/",
+    @PutMapping(path = "/task/{code}/",
             produces = "application/json")
     public Optional<TaskEntity> updateTask(
             @PathVariable(value = "code") String code,
@@ -86,6 +96,6 @@ public class TaskController {
         status.ifPresent(task::setStatus);
         priority.ifPresent(task::setPriority);
         estimate.ifPresent(task::setEstimate);
-        return Optional.of(task);
+        return taskService.update(task);
     }
 }
