@@ -19,6 +19,8 @@ public class PersonInfoResponse {
     private UUID uuid;
     @JsonAlias("login")
     private String login;
+    @JsonAlias("password")
+    private String password;
     @JsonAlias("first_name")
     private String firstName;
     @JsonAlias("last_name")

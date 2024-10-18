@@ -29,5 +29,5 @@ public class TaskEntity {
     @Column(name = "priority", nullable = false)
     private String priority = "medium";
     @Column(name = "estimate")
-    private int estimate;
+    private Integer estimate;
 }

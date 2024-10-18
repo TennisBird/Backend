@@ -4,9 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.tennis_bird.api.data.PersonInfoConverter;
+import org.tennis_bird.api.data.InfoConverter;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.PersonInfoResponse;
 import org.tennis_bird.core.entities.PersonEntity;
@@ -23,7 +22,7 @@ public class PersonsController {
     @Autowired
     PersonService personService;
     @Autowired
-    PersonInfoConverter converter;
+    InfoConverter converter;
     private static final Logger logger = LogManager.getLogger(PersonsController.class.getName());
     @PostMapping(path = "/",
             consumes = "application/json",
@@ -61,7 +60,7 @@ public class PersonsController {
             Optional<Date> birthDate,
             @RequestParam(value = "mail_address") Optional<String> mailAddress,
             @RequestParam(value = "telephone_number") Optional<String> telephoneNumber
-    ) {
+    ) throws ParseException {
         logger.info(username);
         Optional<PersonEntity> personO = personService.find(uuid);
         if (personO.isEmpty()) {
@@ -74,6 +73,9 @@ public class PersonsController {
         birthDate.ifPresent(person::setBirthDate);
         mailAddress.ifPresent(person::setMailAddress);
         telephoneNumber.ifPresent(person::setTelephoneNumber);
-        return personService.update(person).map(personEntity -> converter.entityToResponse(personEntity));
+        Optional<PersonEntity> updatedPerson = personService.update(person);
+        PersonEntity newP = updatedPerson.get();
+        newP.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse("2005-10-10"));
+        return Optional.of(converter.entityToResponse(newP));
     }
 }

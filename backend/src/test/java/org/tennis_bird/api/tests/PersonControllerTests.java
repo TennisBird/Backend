@@ -1,43 +1,39 @@
 package org.tennis_bird.api.tests;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.tennis_bird.api.ControllersTestSupport;
 import org.tennis_bird.core.repositories.PersonRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PersonControllerTests extends ControllersTestSupport {
     @Autowired
     private PersonRepository personRepository;
-    private final ObjectMapper mapper = new ObjectMapper();
-
-    @AfterEach
+    private final String PERSON_BODY_FILE_NAME = "api/person/person_test_body_response.json";
+    @BeforeEach
     public void resetDb() {
         personRepository.deleteAll();
     }
     @Test
     public void testCreatePerson() throws Exception {
-        equalsJsonFiles("api/create_person_response.json", createPerson());
+        equalsJsonFiles(PERSON_BODY_FILE_NAME, createPerson());
     }
     @Test
     public void testGetPerson() throws Exception {
         String uuid = mapper.readTree(createPerson()).get("uuid").asText();
-        equalsJsonFiles("api/get_person_exist_response.json", getPerson(uuid));
+        equalsJsonFiles(PERSON_BODY_FILE_NAME, getPerson(uuid));
     }
     @Test
     public void testDeletePerson() throws Exception {
         String uuid = mapper.readTree(createPerson()).get("uuid").asText();
-        equalsJsonFiles("api/create_person_response.json", getPerson(uuid));
-        assertEquals(deletePerson(uuid), "true");
-        equalsJsonFiles("api/get_person_not_exist_response.json", getPerson(uuid));
+        equalsJsonFiles(PERSON_BODY_FILE_NAME, getPerson(uuid));
+
+        assertEquals(getResponse(delete(PERSON_BASE_URL.concat(uuid))), "true");
+        assertEquals(NULL_RESPONSE, getPerson(uuid));
     }
     @Test
     public void testUpdatePerson() throws Exception {
@@ -46,29 +42,14 @@ public class PersonControllerTests extends ControllersTestSupport {
         assertEquals(beforeUpdateResponse.get("firstName").asText(), "Ivan");
         assertEquals(beforeUpdateResponse.get("lastName").asText(), "Ivanov");
         assertEquals(beforeUpdateResponse.get("birthDate").asText(), "2005-10-09");
-        updatePersonNameAndBirthDate(uuid);
+
+        getResponse(put(PERSON_BASE_URL
+                .concat(uuid)
+                .concat("/?first_name=Vanya&birth_date=2005-10-10")));
+
         JsonNode afterUpdateResponse = mapper.readTree(getPerson(uuid));
         assertEquals(afterUpdateResponse.get("firstName").asText(), "Vanya");
         assertEquals(afterUpdateResponse.get("lastName").asText(), "Ivanov");
         assertEquals(afterUpdateResponse.get("birthDate").asText(), "2005-10-10");
-    }
-
-    private String getPerson(String uuid) throws Exception {
-        return mockMvc.perform(get(String.format("/%s", uuid))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-    }
-    private String deletePerson(String uuid) throws Exception {
-        return mockMvc.perform(delete(String.format("/%s", uuid))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-    }
-    private String updatePersonNameAndBirthDate(String uuid) throws Exception {
-        return mockMvc.perform(put(String.format("/%s/?first_name=Vanya&birth_date=2005-10-10", uuid))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
     }
 }

@@ -31,7 +31,7 @@ public class TeamController {
         return teamService.find(id);
     }
 
-    @PostMapping(path = "/team/{id}/name",
+    @PutMapping(path = "/team/{id}/name",
             produces = "application/json")
     public boolean updateTeamName(
             @PathVariable(value = "id") Long id,
