@@ -24,7 +24,7 @@ public class PersonsController {
     @Autowired
     InfoConverter converter;
     private static final Logger logger = LogManager.getLogger(PersonsController.class.getName());
-    @PostMapping(path = "/",
+    @PostMapping(path = "/person/",
             consumes = "application/json",
             produces = "application/json")
     public PersonInfoResponse createPerson(@RequestBody PersonInfoRequest request) {
@@ -33,7 +33,7 @@ public class PersonsController {
         return converter.entityToResponse(person);
     }
 
-    @GetMapping(path = "/{uuid}",
+    @GetMapping(path = "/person/{uuid}",
             produces = "application/json")
     public Optional<PersonInfoResponse> getPerson(@PathVariable(value = "uuid") UUID uuid) {
         logger.info(uuid);
@@ -41,14 +41,14 @@ public class PersonsController {
         return personO.map(person -> converter.entityToResponse(person));
     }
 
-    @DeleteMapping(path = "/{uuid}",
+    @DeleteMapping(path = "/person/{uuid}",
             produces = "application/json")
     public boolean deletePerson(@PathVariable(value = "uuid") UUID uuid) {
         logger.info("Attempting to delete person with UUID: " + uuid);
         return personService.delete(uuid);
     }
 
-    @PutMapping(path = "/{uuid}/",
+    @PutMapping(path = "/person/{uuid}/",
             produces = "application/json")
     public Optional<PersonInfoResponse> updatePerson (
             @PathVariable(value = "uuid") UUID uuid,

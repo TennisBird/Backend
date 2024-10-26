@@ -31,7 +31,7 @@ public abstract class ControllersTestSupport {
     private final String TASK_CREATE_REQUEST_FILE_NAME = "api/task/create_task_request.json";
     protected final String TEAM_NAME = "tennis_app";
     protected final String NULL_RESPONSE = "null";
-    protected final String PERSON_BASE_URL = "/";
+    protected final String PERSON_BASE_URL = "/person/";
     protected final String TEAM_BASE_URL = "/team/";
     protected final String TASK_BASE_URL = "/task/";
     protected final String WORKER_BASE_URL = "/worker/";
