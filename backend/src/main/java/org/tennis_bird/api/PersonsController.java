@@ -44,7 +44,7 @@ public class PersonsController {
     @DeleteMapping(path = "/person/{uuid}",
             produces = "application/json")
     public boolean deletePerson(@PathVariable(value = "uuid") UUID uuid) {
-        logger.info("Attempting to delete person with UUID: " + uuid);
+        logger.info("Attempting to delete person with UUID: {}", uuid);
         return personService.delete(uuid);
     }
 
@@ -74,6 +74,9 @@ public class PersonsController {
         mailAddress.ifPresent(person::setMailAddress);
         telephoneNumber.ifPresent(person::setTelephoneNumber);
         Optional<PersonEntity> updatedPerson = personService.update(person);
+        if (updatedPerson.isEmpty()) {
+            return Optional.empty();
+        }
         PersonEntity newP = updatedPerson.get();
         newP.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse("2005-10-10"));
         return Optional.of(converter.entityToResponse(newP));

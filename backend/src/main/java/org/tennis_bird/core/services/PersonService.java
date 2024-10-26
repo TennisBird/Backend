@@ -19,21 +19,21 @@ public class PersonService {
     PersonRepository repository;
     private static final Logger logger = LogManager.getLogger(PersonService.class.getName());
     public PersonEntity create(PersonEntity person) {
-        logger.info("create person with uuid " + person.getUuid());
+        logger.info("create person with uuid {}", person.getUuid());
         return repository.save(person);
     }
 
     public Optional<PersonEntity> update(PersonEntity person) {
         if (repository.findById(person.getUuid()).isPresent()) {
-            logger.info("update person " + person);
+            logger.info("update person {}", person);
             return Optional.of(repository.save(person));
         }
-        logger.info("try update person but it not exist" + person);
+        logger.info("try update person but it not exist {}", person);
         return Optional.empty();
     }
 
     public Optional<PersonEntity> find(UUID personUuid) {
-        logger.info("find person with uuid " + personUuid);
+        logger.info("find person with uuid {}", personUuid);
         return repository.findById(personUuid);
     }
 
@@ -42,7 +42,7 @@ public class PersonService {
     }
 
     public boolean delete(UUID uuid) {
-        logger.info("delete person with uuid " + uuid);
+        logger.info("delete person with uuid {}", uuid);
         if (repository.existsById(uuid)) {
             repository.deleteById(uuid);
             return true;

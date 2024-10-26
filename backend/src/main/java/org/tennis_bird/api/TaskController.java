@@ -3,9 +3,9 @@ package org.tennis_bird.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tennis_bird.api.data.InfoConverter;
+import org.tennis_bird.api.data.TaskInfoRequest;
 import org.tennis_bird.api.data.WorkerInfoResponse;
 import org.tennis_bird.core.entities.*;
 import org.tennis_bird.core.services.TaskService;
@@ -29,9 +29,9 @@ public class TaskController {
     @PostMapping(path = "/task/",
             consumes = "application/json",
             produces = "application/json")
-    public TaskEntity createTask(@RequestBody TaskEntity request) {
+    public TaskEntity createTask(@RequestBody TaskInfoRequest request) {
         logger.info(request);
-        return taskService.create(request);
+        return taskService.create(converter.requestToEntity(request));
     }
 
     @GetMapping(path = "/task/{code}",
@@ -43,7 +43,7 @@ public class TaskController {
 
     @DeleteMapping(path = "/task/{code}", produces = "application/json")
     public boolean deleteTask(@PathVariable(value = "code") String code) {
-        logger.info("Attempting to delete task with code: " + code);
+        logger.info("Attempting to delete task with code: {}", code);
         Optional<TaskEntity> task = taskService.findByCode(code);
         return task.map(taskEntity -> taskService.delete(taskEntity.getId())).orElse(true);
     }

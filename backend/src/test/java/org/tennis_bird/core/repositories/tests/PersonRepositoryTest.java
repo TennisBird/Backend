@@ -7,18 +7,18 @@ import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.repositories.PersonRepository;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 
-public class PersonRepositoryTest extends TestRepositorySupport {
+class PersonRepositoryTest extends TestRepositorySupport {
     @Autowired
     PersonRepository personRepository;
 
     @Test
-    public void testCreateAndFindPerson() {
+    void testCreateAndFindPerson() {
         PersonEntity person = savePersonEntity();
         Assertions.assertTrue(personRepository.findById(person.getUuid()).isPresent());
     }
 
     @Test
-    public void testDeletePerson() {
+    void testDeletePerson() {
         PersonEntity person = savePersonEntity();
         Assertions.assertTrue(personRepository.findById(person.getUuid()).isPresent());
 

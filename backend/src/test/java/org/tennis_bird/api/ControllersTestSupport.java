@@ -27,14 +27,14 @@ public abstract class ControllersTestSupport {
     @Autowired
     protected MockMvc mockMvc;
     protected final ObjectMapper mapper = new ObjectMapper();
-    private final String PERSON_CREATE_REQUEST_FILE_NAME = "api/person/create_person_request.json";
-    private final String TASK_CREATE_REQUEST_FILE_NAME = "api/task/create_task_request.json";
-    protected final String TEAM_NAME = "tennis_app";
-    protected final String NULL_RESPONSE = "null";
-    protected final String PERSON_BASE_URL = "/person/";
-    protected final String TEAM_BASE_URL = "/team/";
-    protected final String TASK_BASE_URL = "/task/";
-    protected final String WORKER_BASE_URL = "/worker/";
+    private static final String PERSON_CREATE_REQUEST_FILE_NAME = "api/person/create_person_request.json";
+    private static final String TASK_CREATE_REQUEST_FILE_NAME = "api/task/create_task_request.json";
+    protected static final String TEAM_NAME = "tennis_app";
+    protected static final String NULL_RESPONSE = "null";
+    protected static final String PERSON_BASE_URL = "/person/";
+    protected static final String TEAM_BASE_URL = "/team/";
+    protected static final String TASK_BASE_URL = "/task/";
+    protected static final String WORKER_BASE_URL = "/worker/";
 
     protected boolean testWithCorrectUuid() {
         return true;
@@ -61,8 +61,11 @@ public abstract class ControllersTestSupport {
                 TASK_BASE_URL, parseJSONIntoString(TASK_CREATE_REQUEST_FILE_NAME));
     }
     protected String createTeam(String name) throws Exception {
-        return getResponseFromCreateRequest(
-                TEAM_BASE_URL, "{ \"name\" : \"%s\"}".formatted(name));
+        return mockMvc.perform(post(TEAM_BASE_URL
+                        .concat("?name=%s".formatted(name)))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
     }
     protected String createWorker(String personUuid, String teamId) throws Exception {
         return mockMvc.perform(post(WORKER_BASE_URL
@@ -84,7 +87,6 @@ public abstract class ControllersTestSupport {
                 .andReturn().getResponse().getContentAsString();
     }
     protected void equalsJsonFiles(String responseFile, String response) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
         if (testWithCorrectUuid()) {
             assertJson(mapper.readTree(response))
                     .where()

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tennis_bird.api.ControllersTestSupport;
-import org.tennis_bird.api.data.WorkerInfoResponse;
 import org.tennis_bird.core.repositories.PersonRepository;
 import org.tennis_bird.core.repositories.TeamRepository;
 import org.tennis_bird.core.repositories.WorkerRepository;
@@ -13,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
 
-public class WorkerControllerTests extends ControllersTestSupport {
+class WorkerControllerTests extends ControllersTestSupport {
     @Autowired
     private WorkerRepository workerRepository;
     @Autowired
@@ -34,37 +33,37 @@ public class WorkerControllerTests extends ControllersTestSupport {
     }
 
     @Test
-    public void testCreateWorker() throws Exception {
+    void testCreateWorker() throws Exception {
         String personUuid = mapper.readTree(createPerson()).get("uuid").asText();
         String teamId = mapper.readTree(createTeam(TEAM_NAME)).get("id").asText();
         assertCorrectWorkerBodyResponse(personUuid, teamId, createWorker(personUuid, teamId));
     }
     @Test
-    public void testGetWorker() throws Exception {
+    void testGetWorker() throws Exception {
         String personUuid = mapper.readTree(createPerson()).get("uuid").asText();
         String teamId = mapper.readTree(createTeam(TEAM_NAME)).get("id").asText();
         String id = mapper.readTree(createWorker(personUuid, teamId)).get("id").asText();
         assertCorrectWorkerBodyResponse(personUuid, teamId, getWorker(id));
     }
     @Test
-    public void testDeleteWorker() throws Exception {
+    void testDeleteWorker() throws Exception {
         String personUuid = mapper.readTree(createPerson()).get("uuid").asText();
         String teamId = mapper.readTree(createTeam(TEAM_NAME)).get("id").asText();
         String id = mapper.readTree(createWorker(personUuid, teamId)).get("id").asText();
         assertCorrectWorkerBodyResponse(personUuid, teamId, getWorker(id));
 
-        assertEquals(getResponse(delete(WORKER_BASE_URL.concat(id))), "true");
+        assertEquals("true", getResponse(delete(WORKER_BASE_URL.concat(id))));
         assertEquals(NULL_RESPONSE, getWorker(id));
     }
     @Test
-    public void testUpdateWorkerPersonRole() throws Exception {
+    void testUpdateWorkerPersonRole() throws Exception {
         String personUuid = mapper.readTree(createPerson()).get("uuid").asText();
         String teamId = mapper.readTree(createTeam(TEAM_NAME)).get("id").asText();
         String id = mapper.readTree(createWorker(personUuid, teamId)).get("id").asText();
-        assertEquals(mapper.readTree(getWorker(id)).get("personRole").asText(), "developer");
+        assertEquals("developer", mapper.readTree(getWorker(id)).get("personRole").asText());
 
         getResponse(put(WORKER_BASE_URL.concat(id).concat("/role?role=backend_developer")));
-        assertEquals(mapper.readTree(getWorker(id)).get("personRole").asText(), "backend_developer");
+        assertEquals("backend_developer", mapper.readTree(getWorker(id)).get("personRole").asText());
     }
 
     protected void assertCorrectWorkerBodyResponse(String personId, String teamId, String responseBody) throws Exception {

@@ -7,18 +7,18 @@ import org.tennis_bird.core.entities.TaskEntity;
 import org.tennis_bird.core.repositories.TaskRepository;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 
-public class TaskRepositoryTest extends TestRepositorySupport {
+class TaskRepositoryTest extends TestRepositorySupport {
     @Autowired
     TaskRepository taskRepository;
 
     @Test
-    public void testCreateAndFindTask() {
+    void testCreateAndFindTask() {
         TaskEntity task = saveTaskEntity();
         Assertions.assertTrue(taskRepository.findByCode(task.getCode()).isPresent());
     }
 
     @Test
-    public void testDeleteTask() {
+    void testDeleteTask() {
         TaskEntity task = saveTaskEntity();
         Assertions.assertTrue(taskRepository.findById(task.getId()).isPresent());
 

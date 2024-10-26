@@ -7,18 +7,18 @@ import org.tennis_bird.core.entities.WorkerTaskEntity;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 import org.tennis_bird.core.repositories.WorkerTaskRepository;
 
-public class WorkerTaskRepositoryTest extends TestRepositorySupport {
+class WorkerTaskRepositoryTest extends TestRepositorySupport {
     @Autowired
     WorkerTaskRepository workerTaskRepository;
 
     @Test
-    public void testCreateAndFindWorkerTask() {
+    void testCreateAndFindWorkerTask() {
         WorkerTaskEntity workerTask = saveWorkerTaskEntity("role");
         Assertions.assertTrue(workerTaskRepository.findById(workerTask.getId()).isPresent());
     }
 
     @Test
-    public void testDeleteWorkerTask() {
+    void testDeleteWorkerTask() {
         WorkerTaskEntity workerTask = saveWorkerTaskEntity("role");
         Assertions.assertTrue(workerTaskRepository.findById(workerTask.getId()).isPresent());
 
@@ -27,7 +27,7 @@ public class WorkerTaskRepositoryTest extends TestRepositorySupport {
     }
 
     @Test
-    public void testFindWorkersWithRole() {
+    void testFindWorkersWithRole() {
         WorkerTaskEntity workerTask = saveWorkerTaskEntity("role");
         Assertions.assertEquals(1,
                 workerTaskRepository.findWorkersWithRoleOfTask(workerTask.getTask(), "role").size());
