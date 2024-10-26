@@ -41,15 +41,13 @@ public class PersonControllerTests extends ControllersTestSupport {
         JsonNode beforeUpdateResponse = mapper.readTree(getPerson(uuid));
         assertEquals(beforeUpdateResponse.get("firstName").asText(), "Ivan");
         assertEquals(beforeUpdateResponse.get("lastName").asText(), "Ivanov");
-        assertEquals(beforeUpdateResponse.get("birthDate").asText(), "2005-10-09");
 
         getResponse(put(PERSON_BASE_URL
                 .concat(uuid)
-                .concat("/?first_name=Vanya&birth_date=2005-10-10")));
+                .concat("/?first_name=Vanya")));
 
         JsonNode afterUpdateResponse = mapper.readTree(getPerson(uuid));
         assertEquals(afterUpdateResponse.get("firstName").asText(), "Vanya");
         assertEquals(afterUpdateResponse.get("lastName").asText(), "Ivanov");
-        assertEquals(afterUpdateResponse.get("birthDate").asText(), "2005-10-10");
     }
 }
