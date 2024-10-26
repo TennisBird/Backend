@@ -7,18 +7,18 @@ import org.tennis_bird.core.entities.WorkerEntity;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 import org.tennis_bird.core.repositories.WorkerRepository;
 
-public class WorkerRepositoryTest extends TestRepositorySupport {
+class WorkerRepositoryTest extends TestRepositorySupport {
     @Autowired
     WorkerRepository workerRepository;
 
     @Test
-    public void testCreateAndFindWorker() {
+    void testCreateAndFindWorker() {
         WorkerEntity worker = saveWorkerEntity();
         Assertions.assertTrue(workerRepository.findById(worker.getId()).isPresent());
     }
 
     @Test
-    public void testDeleteWorker() {
+    void testDeleteWorker() {
         WorkerEntity worker = saveWorkerEntity();
         Assertions.assertTrue(workerRepository.findById(worker.getId()).isPresent());
 
@@ -27,10 +27,11 @@ public class WorkerRepositoryTest extends TestRepositorySupport {
     }
 
     @Test
-    public void testChangeRole() {
+    void testChangeRole() {
         WorkerEntity worker = saveWorkerEntity();
 
-        Assertions.assertEquals(workerRepository.changeRole("new_role", worker.getId()), 1);
-        Assertions.assertEquals(workerRepository.findById(worker.getId()).get().getPersonRole(), "new_role");
+        Assertions.assertEquals(1, workerRepository.changeRole("new_role", worker.getId()));
+        Assertions.assertTrue(workerRepository.findById(worker.getId()).isPresent());
+        Assertions.assertEquals("new_role", workerRepository.findById(worker.getId()).get().getPersonRole());
     }
 }

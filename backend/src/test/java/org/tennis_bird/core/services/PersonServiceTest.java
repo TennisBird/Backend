@@ -1,18 +1,14 @@
 package org.tennis_bird.core.services;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tennis_bird.core.entities.PersonEntity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -21,12 +17,12 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-public class PersonServiceTest {
+class PersonServiceTest {
     @Autowired
     PersonService personService;
 
     @Test
-    public void testUpdatePerson() {
+    void testUpdatePerson() {
         PersonEntity person = new PersonEntity();
         UUID personUuid = UUID.randomUUID();
         person.setUuid(personUuid);
@@ -43,6 +39,6 @@ public class PersonServiceTest {
         Assertions.assertTrue(personService.find(person.getUuid()).isPresent());
         person.setFirstName("a");
         personService.update(person);
-        Assertions.assertEquals(personService.find(person.getUuid()).get().getFirstName(), "a");
+        Assertions.assertEquals("a", personService.find(person.getUuid()).get().getFirstName());
     }
 }

@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
 
-public class TeamControllerTests extends ControllersTestSupport {
+class TeamControllerTests extends ControllersTestSupport {
     @Autowired
     private TeamRepository teamRepository;
-    protected final String NEW_TEAM_NAME = "tennis_bird_app";
+    protected static final String NEW_TEAM_NAME = "tennis_bird_app";
 
     @Override
     protected boolean testWithCorrectUuid() {
@@ -26,31 +26,31 @@ public class TeamControllerTests extends ControllersTestSupport {
     }
 
     @Test
-    public void testCreateTeam() throws Exception {
+    void testCreateTeam() throws Exception {
         assertCorrectTeamBodyResponse(createTeam(TEAM_NAME));
     }
     @Test
-    public void testGetTeam() throws Exception {
+    void testGetTeam() throws Exception {
         String id = mapper.readTree(createTeam(TEAM_NAME)).get("id").asText();
         assertCorrectTeamBodyResponse(getTeam(id));
     }
     @Test
-    public void testDeleteTeam() throws Exception {
+    void testDeleteTeam() throws Exception {
         String id = mapper.readTree(createTeam(TEAM_NAME)).get("id").asText();
         assertCorrectTeamBodyResponse(getTeam(id));
 
-        assertEquals(getResponse(delete(TEAM_BASE_URL.concat(id))), "true");
+        assertEquals("true", getResponse(delete(TEAM_BASE_URL.concat(id))));
         assertEquals(NULL_RESPONSE, getTeam(id));
     }
     @Test
-    public void testUpdateTeam() throws Exception {
+    void testUpdateTeam() throws Exception {
         String id = mapper.readTree(createTeam(TEAM_NAME)).get("id").asText();
-        assertEquals(mapper.readTree(getTeam(id)).get("name").asText(), TEAM_NAME);
+        assertEquals(TEAM_NAME, mapper.readTree(getTeam(id)).get("name").asText());
 
         getResponse(put(TEAM_BASE_URL
                 .concat(id)
                 .concat("/name?name=%s".formatted(NEW_TEAM_NAME))));
-        assertEquals(mapper.readTree(getTeam(id)).get("name").asText(), NEW_TEAM_NAME);
+        assertEquals(NEW_TEAM_NAME, mapper.readTree(getTeam(id)).get("name").asText());
     }
 
     private void assertCorrectTeamBodyResponse(String content) throws Exception {

@@ -7,18 +7,18 @@ import org.tennis_bird.core.entities.TeamEntity;
 import org.tennis_bird.core.repositories.TeamRepository;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 
-public class TeamRepositoryTest extends TestRepositorySupport {
+class TeamRepositoryTest extends TestRepositorySupport {
     @Autowired
     TeamRepository teamRepository;
 
     @Test
-    public void testCreateAndFindTeam() {
+    void testCreateAndFindTeam() {
         TeamEntity team = saveTeamEntity();
         Assertions.assertTrue(teamRepository.findById(team.getId()).isPresent());
     }
 
     @Test
-    public void testDeleteTeam() {
+    void testDeleteTeam() {
         TeamEntity team = saveTeamEntity();
         Assertions.assertTrue(teamRepository.findById(team.getId()).isPresent());
 
@@ -27,10 +27,10 @@ public class TeamRepositoryTest extends TestRepositorySupport {
     }
 
     @Test
-    public void testChangeName() {
+    void testChangeName() {
         TeamEntity team = saveTeamEntity();
 
-        Assertions.assertEquals(teamRepository.changeName("new_name", team.getId()), 1);
-        Assertions.assertEquals(teamRepository.findById(team.getId()).get().getName(), "new_name");
+        Assertions.assertEquals(1, teamRepository.changeName("new_name", team.getId()));
+        Assertions.assertEquals("new_name", teamRepository.findById(team.getId()).get().getName());
     }
 }

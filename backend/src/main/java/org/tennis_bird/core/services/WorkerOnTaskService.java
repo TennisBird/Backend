@@ -24,14 +24,13 @@ public class WorkerOnTaskService {
     TaskRepository taskRepository;
     private static final Logger logger = LogManager.getLogger(WorkerOnTaskService.class.getName());
     public WorkerTaskEntity create(WorkerTaskEntity workerTask) {
-        logger.info("set worker " + workerTask.getWorker().getId() +
-                " on task " + workerTask.getTask().getId() +
-                " with role " + workerTask.getWorkerRole());
+        logger.info("set worker {}, on task {} with role {}",
+                workerTask.getWorker().getId(), workerTask.getTask().getId(), workerTask.getWorkerRole());
         return workerTaskRepository.save(workerTask);
     }
 
     public Optional<WorkerTaskEntity> find(Long workerTaskId) {
-        logger.info("find link between worker and task by id " + workerTaskId);
+        logger.info("find link between worker and task by id {}", workerTaskId);
         return workerTaskRepository.findById(workerTaskId);
     }
 
@@ -40,7 +39,7 @@ public class WorkerOnTaskService {
     }
 
     public boolean delete(Long id) {
-        logger.info("delete link between worker and task with id " + id);
+        logger.info("delete link between worker and task with id {}", id);
         if (workerTaskRepository.existsById(id)) {
             workerTaskRepository.deleteById(id);
             return true;
@@ -48,18 +47,25 @@ public class WorkerOnTaskService {
         return false;
     }
 
-    public WorkerTaskEntity setWorkerOnTask(String taskCode, WorkerEntity worker, String workerRole) {
-        logger.info("set worker with id " + worker.getId() + " as " + workerRole + " to task with task code " + taskCode);
+    public Optional<WorkerTaskEntity> setWorkerOnTask(String taskCode, WorkerEntity worker, String workerRole) {
+        logger.info("set worker with id {} as {} to task with task code {}", worker.getId(), workerRole, taskCode);
         WorkerTaskEntity workerTask = new WorkerTaskEntity();
-        workerTask.setTask(taskRepository.findByCode(taskCode).get());
+        Optional<TaskEntity> task = taskRepository.findByCode(taskCode);
+        if (task.isEmpty()) {
+            return Optional.empty();
+        }
+        workerTask.setTask(task.get());
         workerTask.setWorker(worker);
         workerTask.setWorkerRole(workerRole);
-        return workerTaskRepository.save(workerTask);
+        return Optional.of(workerTaskRepository.save(workerTask));
     }
 
     public List<WorkerEntity> getWorkersWithRoleForTask(String code, String role) {
-        logger.info("get workers of task " + code + " with role " + role);
-        TaskEntity task = taskRepository.findByCode(code).get();
-        return workerTaskRepository.findWorkersWithRoleOfTask(task, role);
+        logger.info("get workers of task {} with role {}", code, role);
+        Optional<TaskEntity> task = taskRepository.findByCode(code);
+        if (task.isEmpty()) {
+            return List.of();
+        }
+        return workerTaskRepository.findWorkersWithRoleOfTask(task.get(), role);
     }
 }

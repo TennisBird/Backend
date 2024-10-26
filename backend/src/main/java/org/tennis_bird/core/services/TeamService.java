@@ -18,17 +18,17 @@ public class TeamService {
     TeamRepository repository;
     private static final Logger logger = LogManager.getLogger(TeamService.class.getName());
     public TeamEntity create(TeamEntity team) {
-        logger.info("create team with id " + team.getId());
+        logger.info("create team with id {}", team.getId());
         return repository.save(team);
     }
 
     public Optional<TeamEntity> find(Long teamId) {
-        logger.info("find team with id " + teamId);
+        logger.info("find team with id {}", teamId);
         return repository.findById(teamId);
     }
 
     public int changeName(Long teamId, String name) {
-        logger.info("change team name with id " + teamId);
+        logger.info("change team name with id {}", teamId);
         return repository.changeName(name, teamId);
     }
 
@@ -37,7 +37,7 @@ public class TeamService {
     }
 
     public boolean delete(Long id) {
-        logger.info("delete team with id " + id);
+        logger.info("delete team with id {}", id);
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return true;

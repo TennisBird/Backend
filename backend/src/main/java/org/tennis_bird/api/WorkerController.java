@@ -3,7 +3,6 @@ package org.tennis_bird.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tennis_bird.api.data.InfoConverter;
 import org.tennis_bird.api.data.WorkerInfoResponse;
@@ -36,7 +35,7 @@ public class WorkerController {
             @RequestParam(value = "team_id") Long teamId,
             @RequestParam(value = "person_role") String role
     ) {
-        logger.info(personId + " " + teamId + " " + role);
+        logger.info("create worker with personId {}, teamId {} and role {}", personId, teamId, role);
         Optional<PersonEntity> person = personService.find(personId);
         Optional<TeamEntity> team = teamService.find(teamId);
         return person.isPresent() && team.isPresent()
@@ -63,7 +62,7 @@ public class WorkerController {
 
     @DeleteMapping(path = "/worker/{id}", produces = "application/json")
     public boolean deleteWorker(@PathVariable(value = "id") Long id) {
-        logger.info("Attempting to delete team with id: " + id);
+        logger.info("Attempting to delete team with id: {}", id);
        return workerService.delete(id);
     }
 }

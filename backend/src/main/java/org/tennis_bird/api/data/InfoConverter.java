@@ -2,6 +2,7 @@ package org.tennis_bird.api.data;
 
 import org.springframework.stereotype.Component;
 import org.tennis_bird.core.entities.PersonEntity;
+import org.tennis_bird.core.entities.TaskEntity;
 import org.tennis_bird.core.entities.WorkerEntity;
 
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 @Component
 public class InfoConverter {
     public PersonInfoResponse entityToResponse(PersonEntity personEntity) {
-        PersonInfoResponse response = new PersonInfoResponse(
+        return new PersonInfoResponse(
                 personEntity.getUuid(),
                 personEntity.getLogin(),
                 personEntity.getPassword(),
@@ -19,16 +20,14 @@ public class InfoConverter {
                 personEntity.getBirthDate(),
                 personEntity.getMailAddress(),
                 personEntity.getTelephoneNumber());
-        return response;
     }
 
     public WorkerInfoResponse entityToResponse(WorkerEntity workerEntity) {
-        WorkerInfoResponse response = new WorkerInfoResponse(
+        return new WorkerInfoResponse(
                 workerEntity.getId(),
                 entityToResponse(workerEntity.getPerson()),
                 workerEntity.getTeam(),
                 workerEntity.getPersonRole());
-        return response;
     }
 
     public PersonEntity requestToEntity(PersonInfoRequest request) {
@@ -42,5 +41,16 @@ public class InfoConverter {
                 request.getBirthDate(),
                 request.getMailAddress(),
                 request.getTelephoneNumber());
+    }
+
+    public TaskEntity requestToEntity(TaskInfoRequest request) {
+        return new TaskEntity(
+                null,
+                request.getCode(),
+                request.getTitle(),
+                request.getDescription(),
+                request.getStatus(),
+                request.getPriority(),
+                request.getEstimate());
     }
 }

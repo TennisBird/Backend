@@ -10,44 +10,44 @@ import org.tennis_bird.core.repositories.PersonRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-public class PersonControllerTests extends ControllersTestSupport {
+class PersonControllerTests extends ControllersTestSupport {
     @Autowired
     private PersonRepository personRepository;
-    private final String PERSON_BODY_FILE_NAME = "api/person/person_test_body_response.json";
+    private static final String PERSON_BODY_FILE_NAME = "api/person/person_test_body_response.json";
     @BeforeEach
     public void resetDb() {
         personRepository.deleteAll();
     }
     @Test
-    public void testCreatePerson() throws Exception {
+    void testCreatePerson() throws Exception {
         equalsJsonFiles(PERSON_BODY_FILE_NAME, createPerson());
     }
     @Test
-    public void testGetPerson() throws Exception {
+    void testGetPerson() throws Exception {
         String uuid = mapper.readTree(createPerson()).get("uuid").asText();
         equalsJsonFiles(PERSON_BODY_FILE_NAME, getPerson(uuid));
     }
     @Test
-    public void testDeletePerson() throws Exception {
+    void testDeletePerson() throws Exception {
         String uuid = mapper.readTree(createPerson()).get("uuid").asText();
         equalsJsonFiles(PERSON_BODY_FILE_NAME, getPerson(uuid));
 
-        assertEquals(getResponse(delete(PERSON_BASE_URL.concat(uuid))), "true");
+        assertEquals("true", getResponse(delete(PERSON_BASE_URL.concat(uuid))));
         assertEquals(NULL_RESPONSE, getPerson(uuid));
     }
     @Test
-    public void testUpdatePerson() throws Exception {
+    void testUpdatePerson() throws Exception {
         String uuid = mapper.readTree(createPerson()).get("uuid").asText();
         JsonNode beforeUpdateResponse = mapper.readTree(getPerson(uuid));
-        assertEquals(beforeUpdateResponse.get("firstName").asText(), "Ivan");
-        assertEquals(beforeUpdateResponse.get("lastName").asText(), "Ivanov");
+        assertEquals("Ivan", beforeUpdateResponse.get("firstName").asText());
+        assertEquals("Ivanov", beforeUpdateResponse.get("lastName").asText());
 
         getResponse(put(PERSON_BASE_URL
                 .concat(uuid)
                 .concat("/?first_name=Vanya")));
 
         JsonNode afterUpdateResponse = mapper.readTree(getPerson(uuid));
-        assertEquals(afterUpdateResponse.get("firstName").asText(), "Vanya");
-        assertEquals(afterUpdateResponse.get("lastName").asText(), "Ivanov");
+        assertEquals("Vanya", afterUpdateResponse.get("firstName").asText());
+        assertEquals("Ivanov", afterUpdateResponse.get("lastName").asText());
     }
 }
