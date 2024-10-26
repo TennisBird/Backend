@@ -37,7 +37,7 @@
    - 1. Убедитесь, что приложение запущено.
    - 2. Откройте браузер и перейдите по адресу: [http://localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/).
 
-## Вид Swagger UI смотреть [здесь](https://github.com/user-attachments/assets/ba289974-7327-48b7-9d49-3c41e54c9221)
+## Вид Swagger UI смотреть [здесь](https://github.com/user-attachments/assets/a8e847a2-9725-4432-9904-15cf287d9aa6)
 
    - Вы сможете увидеть все доступные эндпоинты API, их методы, параметры и возможные ответы.
 
