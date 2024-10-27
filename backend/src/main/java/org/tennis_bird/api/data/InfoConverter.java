@@ -6,6 +6,8 @@ import org.tennis_bird.core.entities.WorkerEntity;
 
 import java.util.UUID;
 
+
+//TODO make static instead?
 @Component
 public class InfoConverter {
     public PersonInfoResponse entityToResponse(PersonEntity personEntity) {
