@@ -19,14 +19,14 @@ public class TeamController {
     @PostMapping(path = "/team/",
             produces = "application/json")
     public TeamEntity createTeam(@RequestParam(value = "name") String name) {
-        logger.info(name);
+        logger.info("create team with name {}", name);
         return teamService.create(new TeamEntity(null, name));
     }
 
     @GetMapping(path = "/team/{id}",
             produces = "application/json")
     public Optional<TeamEntity> getTeam(@PathVariable(value = "id") Long id) {
-        logger.info(id);
+        logger.info("get team by id {}", id);
         return teamService.find(id);
     }
 
@@ -36,7 +36,7 @@ public class TeamController {
             @PathVariable(value = "id") Long id,
             @RequestParam(value = "name") String name
     ) {
-        logger.info(id);
+        logger.info("update team {} name to {}", id, name);
         return teamService.changeName(id, name) != 0;
     }
 
