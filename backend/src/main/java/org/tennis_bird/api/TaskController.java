@@ -30,14 +30,14 @@ public class TaskController {
             consumes = "application/json",
             produces = "application/json")
     public TaskEntity createTask(@RequestBody TaskInfoRequest request) {
-        logger.info(request);
+        logger.info("create task by {}", request);
         return taskService.create(converter.requestToEntity(request));
     }
 
     @GetMapping(path = "/task/{code}",
             produces = "application/json")
     public Optional<TaskEntity> getTask(@PathVariable(value = "code") String code) {
-        logger.info(code);
+        logger.info("get task by {}", code);
         return taskService.findByCode(code);
     }
 
@@ -55,7 +55,7 @@ public class TaskController {
             @PathVariable(value = "role") String role,
             @RequestParam(value = "worker_id") Long authorId
     ) {
-        logger.info(code, authorId);
+        logger.info("set worker {} on task with code {}", authorId, code);
         Optional<WorkerEntity> author = workerService.find(authorId);
         if (author.isEmpty()) {
             return false;
@@ -70,7 +70,7 @@ public class TaskController {
             @PathVariable(value = "code") String code,
             @PathVariable(value = "role") String role
     ) {
-        logger.info(code, "get authors");
+        logger.info("get {} for task {}", role, code);
         return workerOnTaskService.getWorkersWithRoleForTask(code, role).stream()
                 .map(converter::entityToResponse).toList();
     }

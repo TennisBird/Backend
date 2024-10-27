@@ -46,7 +46,7 @@ public class WorkerController {
     @GetMapping(path = "/worker/{id}",
             produces = "application/json")
     public Optional<WorkerInfoResponse> getWorker(@PathVariable(value = "id") Long id) {
-        logger.info(id);
+        logger.info("get worker by id {}", id);
         return workerService.find(id).map(w -> converter.entityToResponse(w));
     }
 
@@ -56,7 +56,7 @@ public class WorkerController {
             @PathVariable(value = "id") Long id,
             @RequestParam(value = "role") String role
     ) {
-        logger.info(id);
+        logger.info("update worker {} role to {}", id, role);
         return workerService.changeRole(id, role) != 0;
     }
 

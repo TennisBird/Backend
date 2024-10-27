@@ -28,7 +28,7 @@ public class PersonsController {
             consumes = "application/json",
             produces = "application/json")
     public PersonInfoResponse createPerson(@RequestBody PersonInfoRequest request) {
-        logger.info(request);
+        logger.info("create person by request {}", request);
         PersonEntity person = personService.create(converter.requestToEntity(request));
         return converter.entityToResponse(person);
     }
@@ -36,7 +36,7 @@ public class PersonsController {
     @GetMapping(path = "/person/{uuid}",
             produces = "application/json")
     public Optional<PersonInfoResponse> getPerson(@PathVariable(value = "uuid") UUID uuid) {
-        logger.info(uuid);
+        logger.info("get person by uuid {}", uuid);
         Optional<PersonEntity> personO = personService.find(uuid);
         return personO.map(person -> converter.entityToResponse(person));
     }
