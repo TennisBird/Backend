@@ -49,7 +49,7 @@ public class PersonEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO implement better role system
-        return List.of(new SimpleGrantedAuthority("DEAFULT_USER"));
+        return List.of(new SimpleGrantedAuthority("DEFAULT_USER"));
     }
 
     // TODO 

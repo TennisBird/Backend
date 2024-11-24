@@ -16,9 +16,6 @@ import org.tennis_bird.core.entities.PersonEntity;
 @Component
 public class AuthenticationService {
     @Autowired
-    PersonsController controller;
-
-    @Autowired
     PersonService personService;
 
     @Autowired
@@ -35,7 +32,7 @@ public class AuthenticationService {
         JwtRepsonse response = new JwtRepsonse(token);
 
         // this thing returns some info
-        controller.createPerson(request);
+        personService.create(converter.requestToEntity(request));
 
         return response;
     }

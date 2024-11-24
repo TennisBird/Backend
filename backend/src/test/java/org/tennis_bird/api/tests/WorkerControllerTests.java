@@ -26,10 +26,11 @@ class WorkerControllerTests extends ControllersTestSupport {
     }
 
     @BeforeEach
-    public void resetDb() {
+    public void resetDb() throws Exception {
         personRepository.deleteAll();
         teamRepository.deleteAll();
         workerRepository.deleteAll();
+        registerPerson();
     }
 
     @Test

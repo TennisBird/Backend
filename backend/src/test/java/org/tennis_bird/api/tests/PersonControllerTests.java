@@ -15,8 +15,9 @@ class PersonControllerTests extends ControllersTestSupport {
     private PersonRepository personRepository;
     private static final String PERSON_BODY_FILE_NAME = "api/person/person_test_body_response.json";
     @BeforeEach
-    public void resetDb() {
+    public void resetDb() throws Exception {
         personRepository.deleteAll();
+        registerPerson();
     }
     @Test
     void testCreatePerson() throws Exception {
