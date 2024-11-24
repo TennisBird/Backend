@@ -3,17 +3,11 @@ package org.tennis_bird.core.services.chat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import org.tennis_bird.core.entities.TeamEntity;
 import org.tennis_bird.core.entities.chat.ChatEntity;
-import org.tennis_bird.core.entities.chat.ChatMemberEntity;
 import org.tennis_bird.core.repositories.chat.ChatRepository;
-import org.tennis_bird.core.services.PersonService;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ChatService {

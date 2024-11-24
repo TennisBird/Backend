@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class JwtRepsonse {
+public class JetResponse {
     @JsonAlias("token")
     private String token;
 }

@@ -3,7 +3,6 @@ package org.tennis_bird.core.repositories.tests.chat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.tennis_bird.core.entities.chat.ChatEntity;
 import org.tennis_bird.core.entities.chat.ChatMemberEntity;
 import org.tennis_bird.core.repositories.TestRepositorySupport;
 import org.tennis_bird.core.repositories.chat.ChatMemberRepository;

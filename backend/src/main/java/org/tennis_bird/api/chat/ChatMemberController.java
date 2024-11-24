@@ -14,7 +14,6 @@ import org.tennis_bird.core.services.chat.ChatMemberService;
 import org.tennis_bird.core.services.chat.ChatService;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,7 +64,7 @@ public class ChatMemberController {
     @PostMapping(path = "/chat/",
             produces = "application/json")
     public Optional<ChatEntity> createChatByMembers(
-            @RequestParam(value = "person_id") List<UUID> personIds
+            @RequestParam(value = "person_ids") List<UUID> personIds
     ) {
 
         logger.info("Creating chat member with personIds {}", personIds);

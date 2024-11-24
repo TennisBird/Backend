@@ -10,7 +10,6 @@ import org.tennis_bird.core.repositories.chat.ChatMessageRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.DoubleStream;
 
 @Component
 public class ChatMessageService {

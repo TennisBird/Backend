@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.tennis_bird.core.entities.TeamEntity;
 import org.tennis_bird.core.entities.chat.ChatEntity;
 
 @Getter
