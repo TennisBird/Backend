@@ -31,7 +31,6 @@ public class AuthenticationService {
     AuthenticationManager authenticationManager;
 
     public JwtRepsonse signUp(PersonInfoRequest request) {
-        // TODO refactor, a lot of overhead and conversions
         String token = jwtService.generateToken(converter.requestToEntity(request));
         JwtRepsonse response = new JwtRepsonse(token);
 
@@ -42,18 +41,8 @@ public class AuthenticationService {
     }
 
     public JwtRepsonse signIn(SignInRequest request) throws Exception {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()));
-
-        Optional<PersonEntity> user = personService.findByEmail(request.getEmail());
-
-        if (user.isPresent()) {
-            var jwt = jwtService.generateToken(user.get());
-            return new JwtRepsonse(jwt);
-        }
-
-        // TODO better implementation
-        throw new Exception("USer doesnt not exists");
+        PersonEntity user = personService.findByLogin(request.getLogin());
+        var jwt = jwtService.generateToken(user);
+        return new JwtRepsonse(jwt);
     }
 }

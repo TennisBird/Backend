@@ -43,9 +43,14 @@ public class PersonService
     }
 
     // todo make boolean?
-    public Optional<PersonEntity> findByEmail(String email) {
-        logger.info("finding person with email " + email);
+    public PersonEntity findByEmail(String email) {
+        logger.info("Finding person with email " + email);
         return repository.findByMailAddress(email);
+    }
+
+    public PersonEntity findByLogin(String login) {
+        logger.info("Finding person with login " + login);
+        return repository.findByLogin(login);
     }
 
     public List<PersonEntity> findAll() {
@@ -62,7 +67,8 @@ public class PersonService
     }
 
     @Override
-    public PersonEntity loadUserByUsername(String email) throws UsernameNotFoundException {
-        return findByEmail(email).get();
+    public PersonEntity loadUserByUsername(String login) throws UsernameNotFoundException {
+        PersonEntity person = findByLogin(login);
+        return person;
     }
 }

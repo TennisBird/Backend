@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SignInRequest {
     @JsonAlias
-    private String email;
+    private String login;
     @JsonAlias 
     private String password;
 }

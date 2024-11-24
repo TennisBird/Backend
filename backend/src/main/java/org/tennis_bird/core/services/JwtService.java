@@ -1,53 +1,56 @@
 package org.tennis_bird.core.services;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.tennis_bird.api.data.PersonInfoRequest;
-import org.tennis_bird.core.entities.PersonEntity;
-
+import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.tennis_bird.core.entities.PersonEntity;
 
-@Component
+import java.util.Date;
+
+@Service
 public class JwtService {
 
     private static final long TOKEN_EXPIRE_TIME = 60 * 60 * 1000;
 
-//    @Value("${jwt.secret}")
-    private String jwtSecret = "ajhguygb788& ^U!UI!G YCSTYGUH!SJSP{|!}@!HNC";
+   // @Value("${jwt.secret}")
+    private String jwtSecret = "ijbasgdvahsdhsbahdbyubetuwinqegbyqunihyg 123xuwheubgyqwiuenyqwe";
 
-    // TODO PersonRequest instead of PersonEntity?
-    public String generateToken(PersonEntity request) {
 
+    public String generateToken(PersonEntity userDetails) {
+        String login = userDetails.getLogin();
         return JWT.create()
-                .withSubject(request.getMailAddress())
+                .withSubject(login)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRE_TIME))
-                .withClaim("password", request.getPassword()) 
-                .sign(Algorithm.HMAC512(jwtSecret.getBytes()));
+                .sign(Algorithm.HMAC256(jwtSecret.getBytes()));
     }
 
-    public String extractEmailFromToken(String token) {
-        return JWT.require(Algorithm.HMAC512(jwtSecret.getBytes()))
-                .build()
-                .verify(token)
-                .getSubject();
+    public String extractLogin(String token) {
+        try {
+            String login = JWT.require(Algorithm.HMAC256(jwtSecret.getBytes()))
+                    .build()
+                    .verify(token)
+                    .getSubject();
+            return login;
+        } catch (Exception e) {
+            return null; 
+        }
     }
 
-    public boolean isTokenValid(String token, PersonEntity request) {
-        final String email = extractEmailFromToken(token);
-        return (email.equals(request.getMailAddress()) && !isTokenExpired(token));
+    public boolean isTokenValid(String token, PersonEntity userDetails) { // Use UserDetails
+        final String login = extractLogin(token);
+        return (login != null && login.equals(userDetails.getLogin()) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
-        return JWT.require(Algorithm.HMAC512(jwtSecret.getBytes()))
-                .build()
-                .verify(token)
-                .getExpiresAt()
-                .before(new Date());
+        try {
+             return JWT.require(Algorithm.HMAC256(jwtSecret.getBytes()))
+                    .build()
+                    .verify(token)
+                    .getExpiresAt()
+                    .before(new Date());
+        } catch (Exception e) {
+            return true;
+        }
     }
 }

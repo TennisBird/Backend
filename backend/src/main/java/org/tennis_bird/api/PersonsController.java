@@ -28,7 +28,7 @@ public class PersonsController {
             consumes = "application/json",
             produces = "application/json")
     public PersonInfoResponse createPerson(@RequestBody PersonInfoRequest request) {
-        logger.info(request);
+        logger.info(request.toString());
         PersonEntity person = personService.create(converter.requestToEntity(request));
         return converter.entityToResponse(person);
     }
