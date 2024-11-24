@@ -31,7 +31,6 @@ public abstract class ControllersTestSupport {
     private static final String TASK_CREATE_REQUEST_FILE_NAME = "api/task/create_task_request.json";
     private static final String REGISTER_PERSON_REQUEST_FILE_NAME = "api/person/register_person_request.json";
     //Header obtained after registering user from create_person_request.json
-    private static final String AUTHORIZATION_HEADER = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMTIzIiwiaWF0IjoxNzMyNDYzOTY1LCJleHAiOjE3MzI0Njc1NjV9.sWu-ckMWbv_zCqGrPGbOc9blMDTyHVxI7NPozPaRM_E";
     protected static final String TEAM_NAME = "tennis_app";
     protected static final String NULL_RESPONSE = "null";
     protected static final String PERSON_BASE_URL = "/person/";
@@ -40,15 +39,19 @@ public abstract class ControllersTestSupport {
     protected static final String WORKER_BASE_URL = "/worker/";
     protected static final String REGISTRATION_URL = "/api/auth/register";
 
+    private String authHeader = "";
+
     protected boolean testWithCorrectUuid() {
         return true;
     }
 
     protected void registerPerson() throws Exception {
-        getResponseFromCreateRequest(
+        String tokenResponse;
+        tokenResponse = getResponseFromCreateRequest(
                 REGISTRATION_URL,
                 parseJSONIntoString(REGISTER_PERSON_REQUEST_FILE_NAME)
         );
+        authHeader = "Bearer " + mapper.readTree(tokenResponse).get("token").asText();
     }
 
     protected String getPerson(String uuid) throws Exception {
@@ -80,7 +83,7 @@ public abstract class ControllersTestSupport {
     protected String createTeam(String name) throws Exception {
         return mockMvc.perform(post(TEAM_BASE_URL
                         .concat("?name=%s".formatted(name)))
-                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER)
+                        .header(HttpHeaders.AUTHORIZATION, authHeader)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -89,7 +92,7 @@ public abstract class ControllersTestSupport {
     protected String createWorker(String personUuid, String teamId) throws Exception {
         return mockMvc.perform(post(WORKER_BASE_URL
                         .concat("?person_id=%s&team_id=%s&person_role=developer".formatted(personUuid, teamId)))
-                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER)
+                        .header(HttpHeaders.AUTHORIZATION, authHeader)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -97,7 +100,7 @@ public abstract class ControllersTestSupport {
 
     protected String getResponseFromCreateRequest(String urlTemplate, String content) throws Exception {
         return mockMvc.perform(post(urlTemplate).content(content)
-                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER)
+                        .header(HttpHeaders.AUTHORIZATION, authHeader)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -105,7 +108,7 @@ public abstract class ControllersTestSupport {
 
     protected String getResponse(MockHttpServletRequestBuilder requestBuilder) throws Exception {
         return mockMvc.perform(requestBuilder
-                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER)
+                        .header(HttpHeaders.AUTHORIZATION, authHeader)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
