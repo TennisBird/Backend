@@ -8,6 +8,8 @@ import org.tennis_bird.core.entities.chat.ChatMemberEntity;
 
 import java.util.UUID;
 
+
+//TODO make static instead?
 @Component
 public class InfoConverter {
     public PersonInfoResponse entityToResponse(PersonEntity personEntity) {
