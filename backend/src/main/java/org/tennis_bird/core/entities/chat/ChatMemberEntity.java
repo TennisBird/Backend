@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "chat_room_members")
-public class ChatRoomMemberEntity {
+public class ChatMemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +24,6 @@ public class ChatRoomMemberEntity {
     private ChatEntity chatEntity;
 
     @ManyToOne
-    @JoinColumn(name = "member", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     private PersonEntity member;
 }
