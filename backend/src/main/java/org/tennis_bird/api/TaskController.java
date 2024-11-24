@@ -3,9 +3,9 @@ package org.tennis_bird.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tennis_bird.api.data.InfoConverter;
+import org.tennis_bird.api.data.TaskInfoRequest;
 import org.tennis_bird.api.data.WorkerInfoResponse;
 import org.tennis_bird.core.entities.*;
 import org.tennis_bird.core.services.TaskService;
@@ -29,21 +29,21 @@ public class TaskController {
     @PostMapping(path = "/task/",
             consumes = "application/json",
             produces = "application/json")
-    public TaskEntity createTask(@RequestBody TaskEntity request) {
-        logger.info(request);
-        return taskService.create(request);
+    public TaskEntity createTask(@RequestBody TaskInfoRequest request) {
+        logger.info("create task by {}", request);
+        return taskService.create(converter.requestToEntity(request));
     }
 
     @GetMapping(path = "/task/{code}",
             produces = "application/json")
     public Optional<TaskEntity> getTask(@PathVariable(value = "code") String code) {
-        logger.info(code);
+        logger.info("get task by {}", code);
         return taskService.findByCode(code);
     }
 
     @DeleteMapping(path = "/task/{code}", produces = "application/json")
     public boolean deleteTask(@PathVariable(value = "code") String code) {
-        logger.info("Attempting to delete task with code: " + code);
+        logger.info("Attempting to delete task with code: {}", code);
         Optional<TaskEntity> task = taskService.findByCode(code);
         return task.map(taskEntity -> taskService.delete(taskEntity.getId())).orElse(true);
     }
@@ -55,7 +55,7 @@ public class TaskController {
             @PathVariable(value = "role") String role,
             @RequestParam(value = "worker_id") Long authorId
     ) {
-        logger.info(code, authorId);
+        logger.info("set worker {} on task with code {}", authorId, code);
         Optional<WorkerEntity> author = workerService.find(authorId);
         if (author.isEmpty()) {
             return false;
@@ -70,7 +70,7 @@ public class TaskController {
             @PathVariable(value = "code") String code,
             @PathVariable(value = "role") String role
     ) {
-        logger.info(code, "get authors");
+        logger.info("get {} for task {}", role, code);
         return workerOnTaskService.getWorkersWithRoleForTask(code, role).stream()
                 .map(converter::entityToResponse).toList();
     }

@@ -3,7 +3,6 @@ package org.tennis_bird.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tennis_bird.api.data.InfoConverter;
 import org.tennis_bird.api.data.WorkerInfoResponse;
@@ -36,7 +35,7 @@ public class WorkerController {
             @RequestParam(value = "team_id") Long teamId,
             @RequestParam(value = "person_role") String role
     ) {
-        logger.info(personId + " " + teamId + " " + role);
+        logger.info("create worker with personId {}, teamId {} and role {}", personId, teamId, role);
         Optional<PersonEntity> person = personService.find(personId);
         Optional<TeamEntity> team = teamService.find(teamId);
         return person.isPresent() && team.isPresent()
@@ -47,7 +46,7 @@ public class WorkerController {
     @GetMapping(path = "/worker/{id}",
             produces = "application/json")
     public Optional<WorkerInfoResponse> getWorker(@PathVariable(value = "id") Long id) {
-        logger.info(id);
+        logger.info("get worker by id {}", id);
         return workerService.find(id).map(w -> converter.entityToResponse(w));
     }
 
@@ -57,13 +56,13 @@ public class WorkerController {
             @PathVariable(value = "id") Long id,
             @RequestParam(value = "role") String role
     ) {
-        logger.info(id);
+        logger.info("update worker {} role to {}", id, role);
         return workerService.changeRole(id, role) != 0;
     }
 
     @DeleteMapping(path = "/worker/{id}", produces = "application/json")
     public boolean deleteWorker(@PathVariable(value = "id") Long id) {
-        logger.info("Attempting to delete team with id: " + id);
+        logger.info("Attempting to delete team with id: {}", id);
        return workerService.delete(id);
     }
 }

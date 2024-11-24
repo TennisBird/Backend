@@ -16,17 +16,17 @@ public class WorkerService {
     WorkerRepository repository;
     private static final Logger logger = LogManager.getLogger(WorkerService.class.getName());
     public WorkerEntity create(WorkerEntity worker) {
-        logger.info("create worker with id " + worker.getId());
+        logger.info("create worker with id {}", worker.getId());
         return repository.save(worker);
     }
 
     public int changeRole(Long workerId, String role) {
-        logger.info("change role for worker with id " + workerId);
+        logger.info("change role for worker with id {}", workerId);
         return repository.changeRole(role, workerId);
     }
 
     public Optional<WorkerEntity> find(Long workerId) {
-        logger.info("find worker with id " + workerId);
+        logger.info("find worker with id {}", workerId);
         return repository.findById(workerId);
     }
 
@@ -35,7 +35,7 @@ public class WorkerService {
     }
 
     public boolean delete(Long id) {
-        logger.info("delete worker with id " + id);
+        logger.info("delete worker with id {}", id);
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return true;

@@ -1,15 +1,11 @@
 package org.tennis_bird.api.data;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.tennis_bird.core.entities.TeamEntity;
-
-import java.util.Date;
-import java.util.UUID;
 
 @Getter
 @Setter

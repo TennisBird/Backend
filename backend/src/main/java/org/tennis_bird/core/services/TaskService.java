@@ -18,21 +18,21 @@ public class TaskService {
     TaskRepository repository;
     private static final Logger logger = LogManager.getLogger(TaskService.class.getName());
     public TaskEntity create(TaskEntity task) {
-        logger.info("create task with id " + task.getId());
+        logger.info("create task with id {}", task.getId());
         return repository.save(task);
     }
 
     public Optional<TaskEntity> findByCode(String code) {
-        logger.info("find task by code " + code);
+        logger.info("find task by code {}", code);
         return repository.findByCode(code);
     }
 
     public Optional<TaskEntity> update(TaskEntity task) {
         if (repository.findById(task.getId()).isPresent()) {
-            logger.info("update task " + task);
+            logger.info("update task {}", task);
             return Optional.of(repository.save(task));
         }
-        logger.info("try update task but it not exist" + task);
+        logger.info("try update task but it not exist {}", task);
         return Optional.empty();
     }
 
@@ -41,7 +41,7 @@ public class TaskService {
     }
 
     public boolean delete(Long id) {
-        logger.info("delete task with id " + id);
+        logger.info("delete task with id {}", id);
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return true;

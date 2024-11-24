@@ -24,31 +24,31 @@ public class PersonsController {
     @Autowired
     InfoConverter converter;
     private static final Logger logger = LogManager.getLogger(PersonsController.class.getName());
-    @PostMapping(path = "/",
+    @PostMapping(path = "/person/",
             consumes = "application/json",
             produces = "application/json")
     public PersonInfoResponse createPerson(@RequestBody PersonInfoRequest request) {
-        logger.info(request.toString());
+        logger.info("create person by request {}", request);
         PersonEntity person = personService.create(converter.requestToEntity(request));
         return converter.entityToResponse(person);
     }
 
-    @GetMapping(path = "/{uuid}",
+    @GetMapping(path = "/person/{uuid}",
             produces = "application/json")
     public Optional<PersonInfoResponse> getPerson(@PathVariable(value = "uuid") UUID uuid) {
-        logger.info(uuid);
+        logger.info("get person by uuid {}", uuid);
         Optional<PersonEntity> personO = personService.find(uuid);
         return personO.map(person -> converter.entityToResponse(person));
     }
 
-    @DeleteMapping(path = "/{uuid}",
+    @DeleteMapping(path = "/person/{uuid}",
             produces = "application/json")
     public boolean deletePerson(@PathVariable(value = "uuid") UUID uuid) {
-        logger.info("Attempting to delete person with UUID: " + uuid);
+        logger.info("Attempting to delete person with UUID: {}", uuid);
         return personService.delete(uuid);
     }
 
-    @PutMapping(path = "/{uuid}/",
+    @PutMapping(path = "/person/{uuid}/",
             produces = "application/json")
     public Optional<PersonInfoResponse> updatePerson (
             @PathVariable(value = "uuid") UUID uuid,
@@ -74,6 +74,9 @@ public class PersonsController {
         mailAddress.ifPresent(person::setMailAddress);
         telephoneNumber.ifPresent(person::setTelephoneNumber);
         Optional<PersonEntity> updatedPerson = personService.update(person);
+        if (updatedPerson.isEmpty()) {
+            return Optional.empty();
+        }
         PersonEntity newP = updatedPerson.get();
         newP.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse("2005-10-10"));
         return Optional.of(converter.entityToResponse(newP));
