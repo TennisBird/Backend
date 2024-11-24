@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tennis_bird.api.ControllersTestSupport;
+import org.tennis_bird.core.repositories.PersonRepository;
 import org.tennis_bird.core.repositories.TeamRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,6 +12,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
 
 class TeamControllerTests extends ControllersTestSupport {
+    @Autowired
+    private PersonRepository personRepository;
     @Autowired
     private TeamRepository teamRepository;
     protected static final String NEW_TEAM_NAME = "tennis_bird_app";
@@ -21,8 +24,10 @@ class TeamControllerTests extends ControllersTestSupport {
     }
 
     @BeforeEach
-    public void resetDb() {
+    public void resetDb() throws Exception {
         teamRepository.deleteAll();
+        personRepository.deleteAll();
+        registerPerson();
     }
 
     @Test

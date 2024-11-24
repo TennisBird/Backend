@@ -1,0 +1,10 @@
+{
+  "login": "user123",
+  "password": "securePassword",
+  "first_name": "John",
+  "last_name": "Doe",
+  "username": "johndoe",
+  "birth_date": "1990-05-15",
+  "mail_address": "john.doe@example.com",
+  "telephone_number": "+12312444"
+}

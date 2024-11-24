@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tennis_bird.api.ControllersTestSupport;
+import org.tennis_bird.core.repositories.PersonRepository;
 import org.tennis_bird.core.repositories.TaskRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,6 +14,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
 
 class TaskControllerTests extends ControllersTestSupport {
+    @Autowired
+    private PersonRepository personRepository;
     @Autowired
     private TaskRepository taskRepository;
     private static final String TASK_BODY_FILE_NAME = "api/task/task_test_body_response.json";
@@ -22,8 +25,10 @@ class TaskControllerTests extends ControllersTestSupport {
         return false;
     }
     @BeforeEach
-    public void resetDb() {
+    public void resetDb() throws Exception {
         taskRepository.deleteAll();
+        personRepository.deleteAll();
+        registerPerson();
     }
 
     @Test
