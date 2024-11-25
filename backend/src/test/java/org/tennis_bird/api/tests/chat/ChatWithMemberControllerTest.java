@@ -24,7 +24,6 @@ public class ChatWithMemberControllerTest extends ControllersTestSupport {
     private ChatRepository chatRepository;
     @Autowired
     private ChatMemberRepository chatMemberRepository;
-    private static final String CHAT_NAME = "backenders";
     @BeforeEach
     public void resetDb() throws Exception {
         personRepository.deleteAll();

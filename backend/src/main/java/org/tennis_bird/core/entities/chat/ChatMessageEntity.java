@@ -26,7 +26,7 @@ public class ChatMessageEntity {
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
-    private PersonEntity sender;
+    private ChatMemberEntity sender;
 
     @Column(name = "content", nullable = false)
     private String content;

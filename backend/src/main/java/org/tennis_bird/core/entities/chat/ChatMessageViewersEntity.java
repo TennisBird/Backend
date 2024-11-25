@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.tennis_bird.core.entities.PersonEntity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,7 +25,7 @@ public class ChatMessageViewersEntity {
 
     @ManyToOne
     @JoinColumn(name = "viewer_id", nullable = false)
-    private PersonEntity viewer;
+    private ChatMemberEntity viewer;
 
     @Column(name = "timestamp", nullable = false)
     private Date timestamp;

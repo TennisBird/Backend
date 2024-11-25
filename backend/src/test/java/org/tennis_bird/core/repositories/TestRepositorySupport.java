@@ -103,10 +103,10 @@ public abstract class TestRepositorySupport {
 
     protected ChatMessageEntity saveChatMessageEntity(String context) {
         ChatEntity chat = saveChatEntity();
-        PersonEntity person = savePersonEntity();
+        ChatMemberEntity chatMember = saveChatMemberEntity();
         ChatMessageEntity chatMessage = new ChatMessageEntity();
         chatMessage.setChat(chat);
-        chatMessage.setSender(person);
+        chatMessage.setSender(chatMember);
         chatMessage.setContent(context);
         chatMessage.setTimestamp(Date.from(Instant.now()));
         return chatMessageRepository.save(chatMessage);
