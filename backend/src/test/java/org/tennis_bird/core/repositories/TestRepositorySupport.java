@@ -5,7 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tennis_bird.core.entities.*;
+import org.tennis_bird.core.entities.chat.ChatEntity;
+import org.tennis_bird.core.entities.chat.ChatMemberEntity;
+import org.tennis_bird.core.entities.chat.ChatMessageEntity;
+import org.tennis_bird.core.repositories.chat.ChatMemberRepository;
+import org.tennis_bird.core.repositories.chat.ChatMessageRepository;
+import org.tennis_bird.core.repositories.chat.ChatRepository;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -24,6 +31,12 @@ public abstract class TestRepositorySupport {
     private TaskRepository taskRepository;
     @Autowired
     private WorkerTaskRepository workerTaskRepository;
+    @Autowired
+    private ChatRepository chatRepository;
+    @Autowired
+    private ChatMemberRepository chatMemberRepository;
+    @Autowired
+    private ChatMessageRepository chatMessageRepository;
 
     protected PersonEntity savePersonEntity() {
         PersonEntity person = new PersonEntity();
@@ -71,5 +84,31 @@ public abstract class TestRepositorySupport {
         workerTask.setWorker(saveWorkerEntity());
         workerTask.setWorkerRole(role);
         return workerTaskRepository.save(workerTask);
+    }
+
+    protected ChatEntity saveChatEntity() {
+        ChatEntity chat = new ChatEntity();
+        chat.setName("backenders");
+        return chatRepository.save(chat);
+    }
+
+    protected ChatMemberEntity saveChatMemberEntity() {
+        ChatEntity chat = saveChatEntity();
+        PersonEntity person = savePersonEntity();
+        ChatMemberEntity chatMember = new ChatMemberEntity();
+        chatMember.setChatEntity(chat);
+        chatMember.setMember(person);
+        return chatMemberRepository.save(chatMember);
+    }
+
+    protected ChatMessageEntity saveChatMessageEntity(String context) {
+        ChatEntity chat = saveChatEntity();
+        ChatMemberEntity chatMember = saveChatMemberEntity();
+        ChatMessageEntity chatMessage = new ChatMessageEntity();
+        chatMessage.setChat(chat);
+        chatMessage.setSender(chatMember);
+        chatMessage.setContent(context);
+        chatMessage.setTimestamp(Date.from(Instant.now()));
+        return chatMessageRepository.save(chatMessage);
     }
 }

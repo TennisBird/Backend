@@ -14,6 +14,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,14 +31,18 @@ public abstract class ControllersTestSupport {
     private static final String PERSON_CREATE_REQUEST_FILE_NAME = "api/person/create_person_request.json";
     private static final String TASK_CREATE_REQUEST_FILE_NAME = "api/task/create_task_request.json";
     private static final String REGISTER_PERSON_REQUEST_FILE_NAME = "api/person/register_person_request.json";
-    //Header obtained after registering user from create_person_request.json
     protected static final String TEAM_NAME = "tennis_app";
+    protected static final String CHAT_NAME = "backenders";
+    protected static final String MESS_CONTEXT = "very not important text";
     protected static final String NULL_RESPONSE = "null";
+    protected static final String REGISTRATION_URL = "/api/auth/register";
     protected static final String PERSON_BASE_URL = "/person/";
     protected static final String TEAM_BASE_URL = "/team/";
     protected static final String TASK_BASE_URL = "/task/";
     protected static final String WORKER_BASE_URL = "/worker/";
-    protected static final String REGISTRATION_URL = "/api/auth/register";
+    protected static final String CHAT_BASE_URL = "/chat/";
+    protected static final String CHAT_MEMBER_BASE_URL = "/chat/member/";
+    protected static final String CHAT_MESSAGE_BASE_URL = "/chat/message/";
 
     private String authHeader = "";
 
@@ -55,7 +60,7 @@ public abstract class ControllersTestSupport {
     }
 
     protected String getPerson(String uuid) throws Exception {
-        return getResponse(get(PERSON_BASE_URL.concat(uuid)));
+        return getResponse(get(PERSON_BASE_URL.concat("?uuid=%s".formatted(uuid))));
     }
 
     protected String getTeam(String id) throws Exception {
@@ -68,6 +73,9 @@ public abstract class ControllersTestSupport {
 
     protected String getTask(String code) throws Exception {
         return getResponse(get(TASK_BASE_URL.concat(code)));
+    }
+    protected String getChatMembers(String id) throws Exception {
+        return getResponse(get(CHAT_MEMBER_BASE_URL.concat(id)));
     }
 
     protected String createPerson() throws Exception {
@@ -92,6 +100,24 @@ public abstract class ControllersTestSupport {
     protected String createWorker(String personUuid, String teamId) throws Exception {
         return mockMvc.perform(post(WORKER_BASE_URL
                         .concat("?person_id=%s&team_id=%s&person_role=developer".formatted(personUuid, teamId)))
+                        .header(HttpHeaders.AUTHORIZATION, authHeader)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    protected String createChatByMembers(String name, List<String> personUuids) throws Exception {
+        return mockMvc.perform(post(CHAT_BASE_URL
+                        .concat("?chat_name=%s&person_ids=%s".formatted(name, String.join(",", personUuids))))
+                        .header(HttpHeaders.AUTHORIZATION, authHeader)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    protected String createChatMessage(String chatId, String senderId, String context) throws Exception {
+        return mockMvc.perform(post(CHAT_MESSAGE_BASE_URL
+                        .concat("?chat_id=%s&sender_id=%s&content=%s".formatted(chatId, senderId, context)))
                         .header(HttpHeaders.AUTHORIZATION, authHeader)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
