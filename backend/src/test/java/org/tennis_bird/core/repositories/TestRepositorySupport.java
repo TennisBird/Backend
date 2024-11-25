@@ -88,6 +88,7 @@ public abstract class TestRepositorySupport {
 
     protected ChatEntity saveChatEntity() {
         ChatEntity chat = new ChatEntity();
+        chat.setName("backenders");
         return chatRepository.save(chat);
     }
 

@@ -17,5 +17,5 @@ public class ChatMemberInfoResponse {
     @JsonAlias("person")
     private PersonInfoResponse person;
     @JsonAlias("chat")
-    private ChatEntity entity;
+    private ChatEntity chat;
 }

@@ -9,6 +9,7 @@ import org.tennis_bird.core.repositories.chat.ChatMemberRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class ChatMemberService {
@@ -32,12 +33,17 @@ public class ChatMemberService {
         return repository.findAll();
     }
 
-    public boolean delete(Long id) {
-        logger.info("Deleting chat member with id {}", id);
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+    public boolean deleteByChatAndPersonId(Long chatId, UUID personId) {
+        logger.info("Deleting person with id: {} from chat with id: {}", personId, chatId);
+        if (repository.existsByChatIdAndPersonId(chatId, personId)) {
+            repository.deleteByChatIdAndPersonId(chatId, personId);
             return true;
         }
         return false;
+    }
+
+    public Optional<ChatMemberEntity> findByChatId(Long chatId) {
+        logger.info("Finding all chat members from chat with id {}", chatId);
+        return repository.findByChatId(chatId);
     }
 }

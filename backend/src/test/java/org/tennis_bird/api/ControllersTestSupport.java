@@ -58,7 +58,7 @@ public abstract class ControllersTestSupport {
     }
 
     protected String getPerson(String uuid) throws Exception {
-        return getResponse(get(PERSON_BASE_URL.concat(uuid)));
+        return getResponse(get(PERSON_BASE_URL.concat("?uuid=%s".formatted(uuid))));
     }
 
     protected String getTeam(String id) throws Exception {
@@ -104,9 +104,9 @@ public abstract class ControllersTestSupport {
                 .andReturn().getResponse().getContentAsString();
     }
 
-    protected String createChatByMembers(List<String> personUuids) throws Exception {
+    protected String createChatByMembers(String name, List<String> personUuids) throws Exception {
         return mockMvc.perform(post(CHAT_BASE_URL
-                        .concat("?person_ids=%s".formatted(personUuids)))
+                        .concat("?chat_name=%s&person_ids=%s".formatted(name, String.join(",", personUuids))))
                         .header(HttpHeaders.AUTHORIZATION, authHeader)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

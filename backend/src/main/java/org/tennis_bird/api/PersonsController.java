@@ -33,11 +33,16 @@ public class PersonsController {
         return converter.entityToResponse(person);
     }
 
-    @GetMapping(path = "/person/{uuid}",
+    @GetMapping(path = "/person/",
             produces = "application/json")
-    public Optional<PersonInfoResponse> getPerson(@PathVariable(value = "uuid") UUID uuid) {
+    public Optional<PersonInfoResponse> getPerson(
+            @RequestParam(value = "uuid") Optional<UUID> uuid,
+            @RequestParam(value = "login") Optional<String> login
+    ) {
         logger.info("get person by uuid {}", uuid);
-        Optional<PersonEntity> personO = personService.find(uuid);
+        //TODO find funcs will be better in one style
+        Optional<PersonEntity> personO = uuid.isPresent()
+                ? personService.find(uuid.get()) : Optional.of(personService.findByLogin(login.get()));
         return personO.map(person -> converter.entityToResponse(person));
     }
 

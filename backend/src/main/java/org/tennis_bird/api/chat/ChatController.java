@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.tennis_bird.core.services.chat.ChatService;
 
-@Controller
+@RestController
 public class ChatController {
 
     @Autowired
@@ -21,6 +21,7 @@ public class ChatController {
         logger.info("Attempting to delete chat with ID: {}", id);
         return chatService.delete(id);
     }
+//TODO change name
 
 //    @MessageMapping("/sendSupportMessage")
 //    public void sendSupportMessage(String message) {

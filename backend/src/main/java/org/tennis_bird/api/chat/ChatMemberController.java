@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/chat/member")
 public class ChatMemberController {
     @Autowired
     private ChatMemberService chatMemberService;
@@ -50,26 +49,30 @@ public class ChatMemberController {
     }
 
     @GetMapping("/chat/member/{id}")
-    public Optional<ChatMemberInfoResponse> getChatMember(@PathVariable(value = "id") Long id) {
-        logger.info("Getting chat member by id {}", id);
-        return chatMemberService.find(id).map(converter::entityToResponse);
+    public Optional<ChatMemberInfoResponse> getChatMembers(@PathVariable(value = "id") Long id) {
+        logger.info("Getting chat members by chat id {}", id);
+        return chatMemberService.findByChatId(id).map(converter::entityToResponse);
     }
 
-    @DeleteMapping("/chat/member/{id}")
-    public boolean deleteChatMember(@PathVariable(value = "id") Long id) {
-        logger.info("Attempting to delete chat member with id: {}", id);
-        return chatMemberService.delete(id);
+    @DeleteMapping("/chat/member/")
+    public boolean deletePersonFromChat(
+            @RequestParam(value = "chat_id") Long chatId,
+            @RequestParam(value = "person_id") UUID personId
+    ) {
+        logger.info("Attempting to delete person with id: {} from chat with id: {}", personId, chatId);
+        return chatMemberService.deleteByChatAndPersonId(chatId, personId);
     }
 
     @PostMapping(path = "/chat/",
             produces = "application/json")
     public Optional<ChatEntity> createChatByMembers(
+            @RequestParam(value = "chat_name") String name,
             @RequestParam(value = "person_ids") List<UUID> personIds
     ) {
 
-        logger.info("Creating chat member with personIds {}", personIds);
+        logger.info("Creating chat {} with members personIds {}", personIds);
 
-        ChatEntity chat = chatService.create(new ChatEntity(null));
+        ChatEntity chat = chatService.create(new ChatEntity(null, name));
         Optional<ChatEntity> chatO = chatService.find(chat.getId());
         for(var personId : personIds) {
             Optional<PersonEntity> personO = personService.find(personId);
