@@ -13,6 +13,8 @@ import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.entities.PersonEntity;
 
+import javax.security.auth.login.CredentialException;
+
 @Component
 public class AuthenticationService {
     @Autowired
@@ -27,12 +29,13 @@ public class AuthenticationService {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    public JwtRepsonse signUp(PersonInfoRequest request) {
+    public JwtRepsonse signUp(PersonInfoRequest request) throws CredentialException{
         String token = jwtService.generateToken(converter.requestToEntity(request));
         JwtRepsonse response = new JwtRepsonse(token);
 
-        // this thing returns some info
-        personService.create(converter.requestToEntity(request));
+        if(personService.create(converter.requestToEntity(request)) == null){
+            throw new CredentialException("Email address is invalid");
+        };
 
         return response;
     }

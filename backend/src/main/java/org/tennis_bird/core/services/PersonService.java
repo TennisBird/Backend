@@ -20,12 +20,20 @@ public class PersonService
         implements UserDetailsService {
 
     @Autowired
+    private EmailValidator emailValidator;
+    @Autowired
     private PersonRepository repository;
     private static final Logger logger = LogManager.getLogger(PersonService.class.getName());
 
     public PersonEntity create(PersonEntity person) {
         logger.info("create person with uuid {}", person.getUuid());
-        return repository.save(person);
+        // TODO make optional
+        if(emailValidator.isValid(person.getMailAddress())){
+            return repository.save(person);
+        }
+        else{
+            return null;
+        }
     }
 
     public Optional<PersonEntity> update(PersonEntity person) {

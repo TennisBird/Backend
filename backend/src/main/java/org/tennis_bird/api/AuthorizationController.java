@@ -13,6 +13,8 @@ import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.services.AuthenticationService;
 
+import javax.security.auth.login.CredentialException;
+
 //todo refactor? move to separated microservice(it may not worth it)
 @RestController
 @RequestMapping("/api/auth")
@@ -25,8 +27,13 @@ public class AuthorizationController {
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     ResponseEntity<JwtRepsonse> registerNewUser(@RequestBody PersonInfoRequest request) {
         logger.info("Got registration request: " + request.toString());
-        JwtRepsonse response = autheticationService.signUp(request);
-        return ResponseEntity.ok().body(response);
+        try {
+            JwtRepsonse response = autheticationService.signUp(request);
+            return ResponseEntity.ok().body(response);
+        }
+        catch (CredentialException exception){
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     // TODO proper exception handling
