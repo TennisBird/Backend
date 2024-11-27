@@ -14,6 +14,8 @@ import lombok.Setter;
 public class SignInRequest {
     @JsonAlias
     private String login;
+    @JsonAlias
+    private String email;
     @JsonAlias 
     private String password;
 }
