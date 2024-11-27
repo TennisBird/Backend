@@ -16,8 +16,7 @@ import org.tennis_bird.core.repositories.PersonRepository;
 
 @Component
 @Transactional
-public class PersonService
-        implements UserDetailsService {
+public class PersonService implements UserDetailsService {
 
     @Autowired
     private PersonRepository repository;

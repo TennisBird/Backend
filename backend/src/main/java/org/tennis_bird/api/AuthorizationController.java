@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.tennis_bird.api.data.JwtRepsonse;
+import org.tennis_bird.api.data.JetResponse;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.services.AuthenticationService;
@@ -27,15 +27,16 @@ public class AuthorizationController {
     AuthenticationService authenticationService;
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
-    ResponseEntity<JwtRepsonse> registerNewUser(@RequestBody PersonInfoRequest request) {
+    ResponseEntity<JetResponse> registerNewUser(@RequestBody PersonInfoRequest request) {
         logger.info("Got registration request: " + request.toString());
         JwtRepsonse response = authenticationService.signUp(request);
+
         return ResponseEntity.ok().body(response);
     }
 
     // TODO proper exception handling
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-    ResponseEntity<JwtRepsonse> authenticatePerson(@RequestBody SignInRequest request) {
+    ResponseEntity<JetResponse> authenticatePerson(@RequestBody SignInRequest request) {
         logger.info("Got authetication request: " + request.toString());
         JwtRepsonse response = null;
         try {
