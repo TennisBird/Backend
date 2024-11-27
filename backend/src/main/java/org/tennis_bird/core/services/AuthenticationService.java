@@ -26,9 +26,6 @@ public class AuthenticationService {
     @Autowired
     InfoConverter converter;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
     public JwtRepsonse signUp(PersonInfoRequest request) throws CredentialException{
         String token = jwtService.generateToken(converter.requestToEntity(request));
         JwtRepsonse response = new JwtRepsonse(token);

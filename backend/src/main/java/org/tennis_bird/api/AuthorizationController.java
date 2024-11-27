@@ -12,6 +12,7 @@ import org.tennis_bird.api.data.JwtRepsonse;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.services.AuthenticationService;
+import org.tennis_bird.core.services.PersonService;
 
 import javax.security.auth.login.CredentialException;
 
@@ -22,13 +23,16 @@ public class AuthorizationController {
     private static final Logger logger = LogManager.getLogger(AuthorizationController.class.getName());
 
     @Autowired
-    AuthenticationService autheticationService;
+    private PersonService personService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     ResponseEntity<JwtRepsonse> registerNewUser(@RequestBody PersonInfoRequest request) {
         logger.info("Got registration request: " + request.toString());
         try {
-            JwtRepsonse response = autheticationService.signUp(request);
+            JwtRepsonse response = authenticationService.signUp(request);
             return ResponseEntity.ok().body(response);
         }
         catch (CredentialException exception){
@@ -40,13 +44,21 @@ public class AuthorizationController {
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
     ResponseEntity<JwtRepsonse> authenticatePerson(@RequestBody SignInRequest request) {
         logger.info("Got authetication request: " + request.toString());
-        JwtRepsonse response;
+        JwtRepsonse response = null;
         try {
-            response = autheticationService.signIn(request);
-            return ResponseEntity.ok().body(response);
+            if(request.getEmail() != null && request.getLogin() != null){
+                return ResponseEntity.badRequest().body(null);
+            }
+            if (request.getEmail() != null) {
+                String login = personService.findByEmail(request.getEmail()).getLogin();
+                request.setLogin(login);
+            }
+            response = authenticationService.signIn(request);
+
         } catch (Exception e) {
             logger.error("error: " + e.getMessage());
             return ResponseEntity.badRequest().body(null);
         }
+        return ResponseEntity.ok().body(response);
     }
 }
