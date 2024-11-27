@@ -39,6 +39,9 @@ public class AuthorizationController {
         logger.info("Got authetication request: " + request.toString());
         JwtRepsonse response = null;
         try {
+            if(request.getEmail() != null && request.getLogin() != null){
+                return ResponseEntity.badRequest().body(null);
+            }
             if (request.getEmail() != null) {
                 String login = personService.findByEmail(request.getEmail()).getLogin();
                 request.setLogin(login);
