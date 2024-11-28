@@ -3,7 +3,9 @@ package org.tennis_bird.api.chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 public class ChatMessageController {
 
     @Autowired
@@ -32,40 +34,49 @@ public class ChatMessageController {
 
     private static final Logger logger = LogManager.getLogger(ChatMessageController.class.getName());
 
-    @MessageMapping("/chat/{chatId}/send") // Эндпоинт для отправки сообщения в конкретный чат
-    @SendTo("/topic/chat/{chatId}/messages") // Отправка сообщения подписчикам конкретного чата
-    public ChatMessageEntity sendMessage(@DestinationVariable Long chatId, ChatMessageEntity message) {
-        logger.info("Sending message in chat {} from sender {}", chatId, message.getSender().getId());
-
-        Optional<ChatEntity> chat = chatService.find(chatId);
-        Optional<ChatMemberEntity> sender = chatMemberService.find(message.getSender().getId());
-
-        if (chat.isPresent() && sender.isPresent()) {
-            ChatMessageEntity chatMessage = new ChatMessageEntity(null, chat.get(), sender.get(), message.getContent(), new Date());
-            ChatMessageEntity createdMessage = chatMessageService.create(chatMessage);
-            return createdMessage; // Возвращаем созданное сообщение для отправки всем подписчикам
-        }
-        return null; // Если чат или отправитель не найдены
-    }
-
-    @MessageMapping("/chat/{chatId}/delete/{messageId}") // Эндпоинт для удаления сообщения через WebSocket
-    @SendTo("/topic/chat/{chatId}/messages") // Уведомляем подписчиков о том, что сообщение удалено
-    public Long deleteMessage(@DestinationVariable Long chatId, @DestinationVariable Long messageId) {
-        logger.info("Deleting message with id {} from chat {}", messageId, chatId);
-
-        // Удаляем сообщение по его идентификатору
-        boolean result = chatMessageService.delete(messageId);
-        if (result) {
-            return messageId; // Возвращаем идентификатор удаленного сообщения для уведомления подписчиков
-        }
-
-        return null; // Если удаление не удалось
-    }
-
-//    @MessageMapping("/chat")
-//    public ChatMessage sendMessage(ChatMessage message) {
-//        return message; // Возвращаем сообщение для всех подписчиков
+//    @MessageMapping("/chat/{chatId}/send") // Эндпоинт для отправки сообщения в конкретный чат
+//    @SendTo("/topic/chat/{chatId}/messages") // Отправка сообщения подписчикам конкретного чата
+//    public ChatMessageEntity sendMessage(@DestinationVariable Long chatId, ChatMessageEntity message) {
+//        logger.info("Sending message in chat {} from sender {}", chatId, message.getSender().getId());
+//
+//        Optional<ChatEntity> chat = chatService.find(chatId);
+//        Optional<ChatMemberEntity> sender = chatMemberService.find(message.getSender().getId());
+//
+//        if (chat.isPresent() && sender.isPresent()) {
+//            ChatMessageEntity chatMessage = new ChatMessageEntity(null, chat.get(), sender.get(), message.getContent(), new Date());
+//            ChatMessageEntity createdMessage = chatMessageService.create(chatMessage);
+//            return createdMessage; // Возвращаем созданное сообщение для отправки всем подписчикам
+//        }
+//        return null; // Если чат или отправитель не найдены
 //    }
+//
+//    @MessageMapping("/chat/{chatId}/delete/{messageId}") // Эндпоинт для удаления сообщения через WebSocket
+//    @SendTo("/topic/chat/{chatId}/messages") // Уведомляем подписчиков о том, что сообщение удалено
+//    public Long deleteMessage(@DestinationVariable Long chatId, @DestinationVariable Long messageId) {
+//        logger.info("Deleting message with id {} from chat {}", messageId, chatId);
+//
+//        // Удаляем сообщение по его идентификатору
+//        boolean result = chatMessageService.delete(messageId);
+//        if (result) {
+//            return messageId; // Возвращаем идентификатор удаленного сообщения для уведомления подписчиков
+//        }
+//
+//        return null; // Если удаление не удалось
+//    }
+
+
+
+
+    @MessageMapping("/message")
+    @SendTo("/chat/public")
+    public ChatMessage receivePublicMessage(@Payload ChatMessage message) {
+        return message;
+    }
+
+
+
+
+
 
     @PostMapping(path = "/chat/message/",
             produces = "application/json")
