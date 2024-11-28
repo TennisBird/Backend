@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.JwtService;
@@ -35,7 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String login;
-        if (request.getRequestURI().equals("/api/auth/register") || request.getRequestURI().equals("/api/auth/login")) {
+        AntPathMatcher matcher = new AntPathMatcher();
+        if (request.getRequestURI().equals("/api/auth/register") || request.getRequestURI().equals("/api/auth/login")
+                || matcher.match("**", request.getContextPath())) {
             filterChain.doFilter(request, response);
             return;
         }

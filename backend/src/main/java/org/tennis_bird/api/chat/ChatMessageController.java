@@ -1,6 +1,7 @@
 package org.tennis_bird.api.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -16,6 +17,7 @@ import org.tennis_bird.core.services.chat.ChatMemberService;
 import org.tennis_bird.core.services.chat.ChatMessageService;
 import org.tennis_bird.core.services.chat.ChatService;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -67,16 +69,12 @@ public class ChatMessageController {
 
 
 
-    @MessageMapping("/message")
-    @SendTo("/chat/public")
-    public ChatMessage receivePublicMessage(@Payload ChatMessage message) {
-        return message;
+    @MessageMapping("/chat")
+    @SendTo("/topic/messages")
+    public OutputMessage send(ChatMessage message) throws Exception {
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        return new OutputMessage(message.getFrom(), message.getText(), time);
     }
-
-
-
-
-
 
     @PostMapping(path = "/chat/message/",
             produces = "application/json")
