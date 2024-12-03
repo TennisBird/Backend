@@ -45,6 +45,8 @@ public class PersonEntity implements UserDetails {
     private String mailAddress;
     @Column(name = "telephone_number", nullable = false)
     private String telephoneNumber;
+    @Column(name = "mail_verified", nullable = false)
+    private boolean emailVerified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
