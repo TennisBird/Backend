@@ -8,7 +8,8 @@ CREATE TABLE persons (
   birth_date TIMESTAMP NOT NULL,
   telephone_number VARCHAR(200) NOT NULL,
   mail_address VARCHAR(200) NOT NULL,
-  mail_verified BOOLEAN not null
+  mail_verified BOOLEAN NOT NULL,
+  avatar_path VARCHAR(200) NOT NULL
 );
 
 CREATE UNIQUE INDEX ix_unique_telephone_number_persons ON persons(telephone_number);

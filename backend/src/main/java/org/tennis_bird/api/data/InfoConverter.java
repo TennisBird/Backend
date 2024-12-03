@@ -1,5 +1,6 @@
 package org.tennis_bird.api.data;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.entities.TaskEntity;
@@ -12,6 +13,8 @@ import java.util.UUID;
 //TODO make static instead?
 @Component
 public class InfoConverter {
+    @Value("${person.avatars.path}")
+    private String avatarsPath;
     public PersonInfoResponse entityToResponse(PersonEntity personEntity) {
         return new PersonInfoResponse(
                 personEntity.getUuid(),
@@ -51,7 +54,8 @@ public class InfoConverter {
                 request.getBirthDate(),
                 request.getMailAddress(),
                 request.getTelephoneNumber(),
-                false);
+                false,
+                avatarsPath+"base");
     }
 
     public TaskEntity requestToEntity(TaskInfoRequest request) {

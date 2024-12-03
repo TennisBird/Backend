@@ -1,23 +1,39 @@
 package org.tennis_bird.core.services;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.repositories.PersonRepository;
 import org.tennis_bird.core.services.email.EmailValidationService;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Component
 @Transactional
 public class PersonService implements UserDetailsService {
+
+    //TODO this doesnt work
+    //must have / in the end
+    @Value("${person.avatars.path}")
+    private String avatarPath;
+
+
+
+
 
     @Autowired
     private EmailValidationService emailValidator;
@@ -28,11 +44,24 @@ public class PersonService implements UserDetailsService {
     public PersonEntity create(PersonEntity person) {
         logger.info("create person with uuid {}", person.getUuid());
         // TODO make optional
-        if(emailValidator.isValid(person.getMailAddress())){
+        if (emailValidator.isValid(person.getMailAddress())) {
             return repository.save(person);
-        }
-        else{
+        } else {
             return null;
+        }
+    }
+
+    public Optional<PersonEntity> updateAvatar(MultipartFile avatar, PersonEntity person) {
+        String fullPath = avatarPath + person.getUuid();
+        Path pathToSave = Paths.get(fullPath);
+        try {
+            // must be part of transaction so if failed writing to file or failed writing to db then all operation failed
+            OutputStream stream = Files.newOutputStream(pathToSave);
+            stream.write(avatar.getBytes());
+            stream.close();
+            return repository.updateAvatar(fullPath, person.getUuid());
+        } catch (IOException e) {
+            return Optional.empty();
         }
     }
 

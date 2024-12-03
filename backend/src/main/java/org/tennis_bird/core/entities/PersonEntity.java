@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.checkerframework.common.reflection.qual.ClassBound;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,8 @@ public class PersonEntity implements UserDetails {
     private String telephoneNumber;
     @Column(name = "mail_verified", nullable = false)
     private boolean emailVerified;
+    @Column(name = "avavatae_path", nullable = false)
+    private String avatarPath;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
