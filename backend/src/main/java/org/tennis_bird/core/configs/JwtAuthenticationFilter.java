@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.tennis_bird.core.entities.PersonEntity;
-import org.tennis_bird.core.services.JwtService; // Import your JwtService
+import org.tennis_bird.core.services.JwtService;
 import org.tennis_bird.core.services.PersonService;
 
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.entities.TaskEntity;
 import org.tennis_bird.core.entities.WorkerEntity;
+import org.tennis_bird.core.entities.chat.ChatMemberEntity;
 
 import java.util.UUID;
 
@@ -22,6 +23,13 @@ public class InfoConverter {
                 personEntity.getBirthDate(),
                 personEntity.getMailAddress(),
                 personEntity.getTelephoneNumber());
+    }
+
+    public ChatMemberInfoResponse entityToResponse(ChatMemberEntity memberEntity) {
+        return new ChatMemberInfoResponse(
+                memberEntity.getId(),
+                entityToResponse(memberEntity.getMember()),
+                memberEntity.getChatEntity());
     }
 
     public WorkerInfoResponse entityToResponse(WorkerEntity workerEntity) {

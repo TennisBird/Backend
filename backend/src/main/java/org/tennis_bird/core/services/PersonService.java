@@ -17,8 +17,7 @@ import org.tennis_bird.core.services.email.EmailValidationService;
 
 @Component
 @Transactional
-public class PersonService
-        implements UserDetailsService {
+public class PersonService implements UserDetailsService {
 
     @Autowired
     private EmailValidationService emailValidator;
