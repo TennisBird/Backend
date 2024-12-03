@@ -20,9 +20,6 @@ public class AuthenticationService {
     @Autowired
     InfoConverter converter;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
     public JetResponse signUp(PersonInfoRequest request) {
         String token = jwtService.generateToken(converter.requestToEntity(request));
         JetResponse response = new JetResponse(token);
