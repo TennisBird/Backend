@@ -8,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Component;
 import org.tennis_bird.api.PersonsController;
 import org.tennis_bird.api.data.InfoConverter;
-import org.tennis_bird.api.data.JwtRepsonse;
+import org.tennis_bird.api.data.JwtResponse;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.entities.PersonEntity;
@@ -26,9 +26,9 @@ public class AuthenticationService {
     @Autowired
     InfoConverter converter;
 
-    public JwtRepsonse signUp(PersonInfoRequest request) throws CredentialException{
+    public JwtResponse signUp(PersonInfoRequest request) throws CredentialException{
         String token = jwtService.generateToken(converter.requestToEntity(request));
-        JwtRepsonse response = new JwtRepsonse(token);
+        JwtResponse response = new JwtResponse(token);
 
         if(personService.create(converter.requestToEntity(request)) == null){
             throw new CredentialException("Email address is invalid");
@@ -37,9 +37,9 @@ public class AuthenticationService {
         return response;
     }
 
-    public JwtRepsonse signIn(SignInRequest request) throws Exception {
+    public JwtResponse signIn(SignInRequest request) throws Exception {
         PersonEntity user = personService.findByLogin(request.getLogin());
         var jwt = jwtService.generateToken(user);
-        return new JwtRepsonse(jwt);
+        return new JwtResponse(jwt);
     }
 }

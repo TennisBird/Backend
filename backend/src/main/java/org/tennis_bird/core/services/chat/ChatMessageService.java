@@ -20,7 +20,7 @@ public class ChatMessageService {
 
     public ChatMessageEntity create(ChatMessageEntity chatMessage) {
         logger.info("Creating chat message with id {}", chatMessage.getId());
-        chatMessage.setTimestamp(new Date()); // Установка времени создания сообщения
+        chatMessage.setTimestamp(new Date());
         return repository.save(chatMessage);
     }
 

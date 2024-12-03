@@ -6,7 +6,7 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.tennis_bird.api.data.JwtRepsonse;
+import org.tennis_bird.api.data.JwtResponse;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.entities.PersonEntity;
@@ -37,10 +37,10 @@ public class AuthorizationController {
 
     // Todo implement
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
-    ResponseEntity<JwtRepsonse> registerNewUser(@RequestBody PersonInfoRequest request) {
+    ResponseEntity<JwtResponse> registerNewUser(@RequestBody PersonInfoRequest request) {
         logger.info("Got registration request: " + request.toString());
         try {
-            JwtRepsonse response = authenticationService.signUp(request);
+            JwtResponse response = authenticationService.signUp(request);
             String toEmail = request.getMailAddress();
 /*            emailSendingService.sendEmail(toEmail, "Registartion", "To complete registartion, click the next link: "
                     + "https://wayzapnet.duckdns.org:20345/api/auth/email-verification/");*/
@@ -52,9 +52,9 @@ public class AuthorizationController {
 
     // TODO proper exception handling
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-    ResponseEntity<JwtRepsonse> authenticatePerson(@RequestBody SignInRequest request) {
+    ResponseEntity<JwtResponse> authenticatePerson(@RequestBody SignInRequest request) {
         logger.info("Got authetication request: " + request.toString());
-        JwtRepsonse response = null;
+        JwtResponse response = null;
         try {
             if (request.getEmail() != null && request.getLogin() != null) {
                 return ResponseEntity.badRequest().body(null);
