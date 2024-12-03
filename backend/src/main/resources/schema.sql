@@ -9,7 +9,7 @@ CREATE TABLE persons (
   telephone_number VARCHAR(200) NOT NULL,
   mail_address VARCHAR(200) NOT NULL,
   mail_verified BOOLEAN NOT NULL,
-  avatar_path VARCHAR(200) NOT NULL
+  avatar_path VARCHAR(200)
 );
 
 CREATE UNIQUE INDEX ix_unique_telephone_number_persons ON persons(telephone_number);
