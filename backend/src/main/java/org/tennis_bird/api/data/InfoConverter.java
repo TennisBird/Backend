@@ -50,7 +50,8 @@ public class InfoConverter {
                 request.getUsername(),
                 request.getBirthDate(),
                 request.getMailAddress(),
-                request.getTelephoneNumber());
+                request.getTelephoneNumber(),
+                false);
     }
 
     public TaskEntity requestToEntity(TaskInfoRequest request) {
