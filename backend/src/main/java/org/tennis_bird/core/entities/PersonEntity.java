@@ -48,7 +48,7 @@ public class PersonEntity implements UserDetails {
     private String telephoneNumber;
     @Column(name = "mail_verified", nullable = false)
     private boolean emailVerified;
-    @Column(name = "avavatae_path", nullable = false)
+    @Column(name = "avatar_path")
     private String avatarPath;
 
     @Override

@@ -27,8 +27,9 @@ public class AuthenticationService {
     InfoConverter converter;
 
     public JwtResponse signUp(PersonInfoRequest request) throws CredentialException{
-        String token = jwtService.generateToken(converter.requestToEntity(request));
-        JwtResponse response = new JwtResponse(token);
+        PersonEntity entity = converter.requestToEntity(request);
+        String token = jwtService.generateToken(entity);
+        JwtResponse response = new JwtResponse(token, entity.getUuid());
 
         if(personService.create(converter.requestToEntity(request)) == null){
             throw new CredentialException("Email address is invalid");
@@ -40,6 +41,6 @@ public class AuthenticationService {
     public JwtResponse signIn(SignInRequest request) throws Exception {
         PersonEntity user = personService.findByLogin(request.getLogin());
         var jwt = jwtService.generateToken(user);
-        return new JwtResponse(jwt);
+        return new JwtResponse(jwt, user.getUuid());
     }
 }

@@ -1,5 +1,6 @@
 package org.tennis_bird.core.services;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,7 @@ import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.repositories.PersonRepository;
 import org.tennis_bird.core.services.email.EmailValidationService;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,11 +28,8 @@ public class PersonService implements UserDetailsService {
 
     //TODO this doesnt work
     //must have / in the end
-    @Value("${person.avatars.path}")
+    @Value("${avatars.path}")
     private String avatarPath;
-
-
-
 
 
     @Autowired
@@ -51,18 +48,19 @@ public class PersonService implements UserDetailsService {
         }
     }
 
-    public Optional<PersonEntity> updateAvatar(MultipartFile avatar, PersonEntity person) {
-        String fullPath = avatarPath + person.getUuid();
+    public void updateAvatar(MultipartFile avatar, UUID uuid) throws IOException {
+        String fullPath = avatarPath + uuid +".png";
+        repository.updateAvatar(fullPath, uuid);
         Path pathToSave = Paths.get(fullPath);
-        try {
-            // must be part of transaction so if failed writing to file or failed writing to db then all operation failed
-            OutputStream stream = Files.newOutputStream(pathToSave);
-            stream.write(avatar.getBytes());
-            stream.close();
-            return repository.updateAvatar(fullPath, person.getUuid());
-        } catch (IOException e) {
-            return Optional.empty();
-        }
+        OutputStream stream = Files.newOutputStream(pathToSave);
+        stream.write(avatar.getBytes());
+        stream.close();
+    }
+
+    public Optional<byte[]> getAvatar(UUID uuid) throws IOException {
+        File file = new File(avatarPath + uuid);
+        InputStream inputStream = new FileInputStream(file);
+        return Optional.of(IOUtils.toByteArray(inputStream));
     }
 
     public Optional<PersonEntity> update(PersonEntity person) {

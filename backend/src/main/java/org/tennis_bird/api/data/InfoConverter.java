@@ -13,7 +13,7 @@ import java.util.UUID;
 //TODO make static instead?
 @Component
 public class InfoConverter {
-    @Value("${person.avatars.path}")
+    @Value("${avatars.path}")
     private String avatarsPath;
     public PersonInfoResponse entityToResponse(PersonEntity personEntity) {
         return new PersonInfoResponse(
@@ -55,7 +55,7 @@ public class InfoConverter {
                 request.getMailAddress(),
                 request.getTelephoneNumber(),
                 false,
-                avatarsPath+"base");
+                avatarsPath+"base.png");
     }
 
     public TaskEntity requestToEntity(TaskInfoRequest request) {
