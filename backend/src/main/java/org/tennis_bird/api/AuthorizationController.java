@@ -73,6 +73,7 @@ public class AuthorizationController {
     }
 
     //TODO change return type
+    //TODO implement
     @GetMapping(path = "/email-verification/{uuid}", produces = "aplicatuon/json")
     ResponseEntity<String> verifyEmail(@PathVariable("uuid") UUID uuid) {
         Optional<PersonEntity> person = personService.verifyUser(uuid);

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+
+// TODO make base uri for all methods of this controllers = /person/
 @RestController
 public class PersonsController {
     @Autowired
@@ -27,6 +30,7 @@ public class PersonsController {
     @Autowired
     InfoConverter converter;
     private static final Logger logger = LogManager.getLogger(PersonsController.class.getName());
+
     @PostMapping(path = "/person/",
             consumes = "application/json",
             produces = "application/json")
@@ -36,7 +40,33 @@ public class PersonsController {
         return converter.entityToResponse(person);
     }
 
-    @PostMapping(path = "/person/update-avatar", consumes = "multipart/form-data", produces = "application/json")
+    @PostMapping("/person/{uuid}/avatar/update/")
+    public ResponseEntity<String> updateAvatar(
+            @PathVariable UUID uuid,
+            @RequestParam("avatar") MultipartFile avatarFile) {
+        try {
+            personService.updateAvatar(avatarFile, uuid);
+            return ResponseEntity.ok("Avatar updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to update avatar: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping(value = "/person/{uuid}/avatar/", produces = "multipart/form-data")
+    public ResponseEntity<byte[]> getAvatar(@PathVariable("uuid") UUID uuid) {
+        try {
+            Optional<byte[]> avatarData = personService.getAvatar(uuid);
+            if(avatarData.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(avatarData.get());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
+
+/*    @PostMapping(path = "/person/update-avatar", consumes = "multipart/form-data", produces = "application/json")
     public ResponseEntity<String> updateAvatar(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "uuid") UUID uuid) {
         logger.info("update avatar by file {}", file);
         // todo not finding even with valid uuid
@@ -57,7 +87,7 @@ public class PersonsController {
         } catch (IOException e) {
             return Optional.empty();
         }
-    }
+    }*/
 
     @GetMapping(path = "/person/",
             produces = "application/json")
@@ -81,7 +111,7 @@ public class PersonsController {
 
     @PutMapping(path = "/person/{uuid}/",
             produces = "application/json")
-    public Optional<PersonInfoResponse> updatePerson (
+    public Optional<PersonInfoResponse> updatePerson(
             @PathVariable(value = "uuid") UUID uuid,
             @RequestParam(value = "username") Optional<String> username,
             @RequestParam(value = "first_name") Optional<String> firstName,

@@ -23,6 +23,10 @@ public interface PersonRepository extends JpaRepository<PersonEntity, UUID> {
     @Query("SELECT p FROM PersonEntity p WHERE p.login = :login")
     Optional<PersonEntity> findByLogin(@Param("login") String login);
 
+    @Transactional
+    @Query("SELECT p.avatarPath FROM PersonEntity p WHERE p.uuid= :uuid")
+    Optional<String> getAvatarPathByUUID(@Param("uuid") UUID uuid);
+
 
     // update can sucesfully update 0 rows!!!!!
     @Modifying

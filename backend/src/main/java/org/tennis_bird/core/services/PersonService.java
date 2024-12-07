@@ -58,7 +58,12 @@ public class PersonService implements UserDetailsService {
     }
 
     public Optional<byte[]> getAvatar(UUID uuid) throws IOException {
-        File file = new File(avatarPath + uuid);
+        Optional<String> path = repository.getAvatarPathByUUID(uuid);
+        if(path.isEmpty()) {
+            return Optional.empty();
+        }
+
+        File file = new File(path.get());
         InputStream inputStream = new FileInputStream(file);
         return Optional.of(IOUtils.toByteArray(inputStream));
     }
