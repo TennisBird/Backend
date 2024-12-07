@@ -22,11 +22,11 @@ public class SecurityConfig {
 
     private static final Logger logger = LogManager.getLogger(SecurityConfig.class.getName());
 
-/*     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new MessageDigestPasswordEncoder("MD5");
-    }
- */
+    /*     @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new MessageDigestPasswordEncoder("MD5");
+        }
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -36,7 +36,7 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider(PersonService personService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(personService);
-/*         authProvider.setPasswordEncoder(passwordEncoder()); */
+        /*         authProvider.setPasswordEncoder(passwordEncoder()); */
         return authProvider;
     }
 
@@ -46,6 +46,7 @@ public class SecurityConfig {
         logger.warn("Used Custom Security configuration");
 
         http.csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions().disable())
                 .authorizeRequests(requests -> {
                     requests.anyRequest().permitAll();
                 })

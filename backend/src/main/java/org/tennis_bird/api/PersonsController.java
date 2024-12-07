@@ -14,7 +14,6 @@ import org.tennis_bird.api.data.PersonInfoResponse;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.PersonService;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,29 +64,6 @@ public class PersonsController {
         }
         return ResponseEntity.badRequest().body(null);
     }
-
-/*    @PostMapping(path = "/person/update-avatar", consumes = "multipart/form-data", produces = "application/json")
-    public ResponseEntity<String> updateAvatar(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "uuid") UUID uuid) {
-        logger.info("update avatar by file {}", file);
-        // todo not finding even with valid uuid
-        var temp = personService.find(uuid);
-
-        try {
-            personService.updateAvatar(file, uuid);
-            return ResponseEntity.ok("Avatar updated successfully");
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Failed to update avatar");
-        }
-    }
-    @GetMapping(path = "/person/avatar", produces = "image/png", consumes = "application/json")
-    public Optional<byte[]> getAvatar(@RequestParam UUID uuid) {
-        logger.info("getting avatar by {}", uuid);
-        try {
-            return personService.getAvatar(uuid);
-        } catch (IOException e) {
-            return Optional.empty();
-        }
-    }*/
 
     @GetMapping(path = "/person/",
             produces = "application/json")
