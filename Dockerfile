@@ -14,6 +14,7 @@ RUN gradle bootJar -i --stacktrace
 
 
 FROM openjdk:17
+EXPOSE 8080
 WORKDIR /usr/src/java-app
 COPY --from=build /usr/src/apps/kazan/backend/build/libs/*.jar ./app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
