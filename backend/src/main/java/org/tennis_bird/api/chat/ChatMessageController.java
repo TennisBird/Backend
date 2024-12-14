@@ -1,7 +1,6 @@
 package org.tennis_bird.api.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.util.HtmlUtils;
 import org.tennis_bird.core.entities.chat.ChatEntity;
 import org.tennis_bird.core.entities.chat.ChatMemberEntity;
 import org.tennis_bird.core.entities.chat.ChatMessageEntity;
@@ -35,46 +35,6 @@ public class ChatMessageController {
     private ChatMemberService chatMemberService;
 
     private static final Logger logger = LogManager.getLogger(ChatMessageController.class.getName());
-
-//    @MessageMapping("/chat/{chatId}/send") // Эндпоинт для отправки сообщения в конкретный чат
-//    @SendTo("/topic/chat/{chatId}/messages") // Отправка сообщения подписчикам конкретного чата
-//    public ChatMessageEntity sendMessage(@DestinationVariable Long chatId, ChatMessageEntity message) {
-//        logger.info("Sending message in chat {} from sender {}", chatId, message.getSender().getId());
-//
-//        Optional<ChatEntity> chat = chatService.find(chatId);
-//        Optional<ChatMemberEntity> sender = chatMemberService.find(message.getSender().getId());
-//
-//        if (chat.isPresent() && sender.isPresent()) {
-//            ChatMessageEntity chatMessage = new ChatMessageEntity(null, chat.get(), sender.get(), message.getContent(), new Date());
-//            ChatMessageEntity createdMessage = chatMessageService.create(chatMessage);
-//            return createdMessage; // Возвращаем созданное сообщение для отправки всем подписчикам
-//        }
-//        return null; // Если чат или отправитель не найдены
-//    }
-//
-//    @MessageMapping("/chat/{chatId}/delete/{messageId}") // Эндпоинт для удаления сообщения через WebSocket
-//    @SendTo("/topic/chat/{chatId}/messages") // Уведомляем подписчиков о том, что сообщение удалено
-//    public Long deleteMessage(@DestinationVariable Long chatId, @DestinationVariable Long messageId) {
-//        logger.info("Deleting message with id {} from chat {}", messageId, chatId);
-//
-//        // Удаляем сообщение по его идентификатору
-//        boolean result = chatMessageService.delete(messageId);
-//        if (result) {
-//            return messageId; // Возвращаем идентификатор удаленного сообщения для уведомления подписчиков
-//        }
-//
-//        return null; // Если удаление не удалось
-//    }
-
-
-
-
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
-    public OutputMessage send(ChatMessage message) throws Exception {
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
-        return new OutputMessage(message.getFrom(), message.getText(), time);
-    }
 
     @PostMapping(path = "/chat/message/",
             produces = "application/json")
