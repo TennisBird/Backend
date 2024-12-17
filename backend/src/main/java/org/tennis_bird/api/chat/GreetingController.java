@@ -67,15 +67,13 @@ public class GreetingController {
         }
     }
     @MessageMapping("/chat/{chatId}")
-    public void sendMessageToChat(@DestinationVariable Long chatId, @Payload Message message) {
-        // Получение всех пользователей в чате
-        List<String> userIds = chatMemberService.findByChatId(chatId).stream().map(m->m.getMember()
+    public void sendMessageToChat(@DestinationVariable Long chatId, HelloMessage message) {
+        List<String> usernames = chatMemberService.findByChatId(chatId).stream().map(m->m.getMember()
                 .getUsername()).toList();
 
-        // Отправка сообщения всем пользователям в чате
-//        for (String userId : userIds) {
-//            simpMessagingTemplate.convertAndSendToUser(userId, "/queue/messages/" + chatId, message);
-//        }
-        simpMessagingTemplate.convertAndSend("/topic/chats/"+chatId, message);
+        for (String username : usernames) {
+            //simpMessagingTemplate.convertAndSendToUser(userId, "/queue/messages/" + chatId, message);
+            simpMessagingTemplate.convertAndSend("/topic/chats/"+username+"/"+chatId, new Greeting("Hello, " + HtmlUtils.htmlEscape(message.name()) + "?"));
+        }
     }
 }

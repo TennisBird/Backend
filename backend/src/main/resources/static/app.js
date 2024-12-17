@@ -19,20 +19,17 @@ stompClient.onStompError = (frame) => {
     console.error('Additional details: ' + frame.body);
 };
 
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
+    function setConnected(connected) {
+        $("#connect").prop("disabled", connected);
+        $("#disconnect").prop("disabled", !connected);
     if (connected) {
         $("#conversation").show();
-        $("#conversation2").show();
     }
     else {
         $("#conversation").hide();
-        $("#conversation2").hide();
     }
     $("#greetings").html("");
-    $("#messegings").html("");
-}
+    }
 
 function connect() {
     stompClient.activate();
@@ -55,16 +52,27 @@ function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
 }
 
- function subscribeToChats(chatId) {
-        stompClient.subscribe(`/topic/chats/`+chatId, function (message) {
-            showMessage(message);
+    function subscribeToChats(chatId, ) {
+        // Создаем новый контейнер для этого чата
+        const chatContainer = $(`<div class="chat-window" id="chat-${chatId}">
+            <h4>Chat ID: ${chatId}</h4>
+            <table class="table table-striped">
+                <thead><tr><th>Messages</th></tr></thead>
+                <tbody id="messages-${chatId}"></tbody>
+            </table>
+        </div>`);
+        $("#chatContainers").append(chatContainer); // Добавляем контейнер в основное окно
+        const name = $("#name").val();
+        stompClient.subscribe(`/topic/chats/${name}/${chatId}`, function (message) {
+              showMessage(chatId, message);
         });
+        console.log(`subscribe to /${name}/topic/chats/${chatId}`);
     }
 
- function showMessage(message) {
+    function showMessage(chatId, message) {
         const parsedMessage = JSON.parse(message.body);
-        $("#messegings").append("<tr><td>" + parsedMessage.content + "</td></tr>");
- }
+        $(`#messages-${chatId}`).append("<tr><td>" + parsedMessage.content + "</td></tr>");
+    }
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
@@ -83,6 +91,7 @@ $(function () {
             $("#sendMessageForm").on('submit', function (e) {
                  e.preventDefault();
                  const chatId = $("#chatId").val();
+                 const name = $("#name").val();
                  const messageContent = $("#messageContent").val();
 
                  const message = {
@@ -90,7 +99,7 @@ $(function () {
                  };
                  stompClient.publish({
                       destination: "/app/chat/"+chatId,
-                      body: JSON.stringify(message)
+                      body: JSON.stringify({'name': $("#messageContent").val()})
                  });
                  $("#messageContent").val(""); // Очищаем поле ввода
              });
