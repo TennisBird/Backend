@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.tennis_bird.core.entities.chat.ChatEntity;
 import org.tennis_bird.core.entities.chat.ChatMemberEntity;
 import org.tennis_bird.core.repositories.chat.ChatMemberRepository;
 
@@ -42,8 +43,13 @@ public class ChatMemberService {
         return false;
     }
 
-    public Optional<ChatMemberEntity> findByChatId(Long chatId) {
+    public List<ChatMemberEntity> findByChatId(Long chatId) {
         logger.info("Finding all chat members from chat with id {}", chatId);
         return repository.findByChatId(chatId);
+    }
+
+    public List<ChatEntity> findChatsByUsername(String username) {
+        logger.info("Finding all chats with users {}", username);
+        return repository.findChatsByUsername(username);
     }
 }

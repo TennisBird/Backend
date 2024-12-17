@@ -49,9 +49,9 @@ public class ChatMemberController {
     }
 
     @GetMapping("/chat/member/{id}")
-    public Optional<ChatMemberInfoResponse> getChatMembers(@PathVariable(value = "id") Long id) {
+    public List<ChatMemberInfoResponse> getChatMembers(@PathVariable(value = "id") Long id) {
         logger.info("Getting chat members by chat id {}", id);
-        return chatMemberService.findByChatId(id).map(converter::entityToResponse);
+        return chatMemberService.findByChatId(id).stream().map(converter::entityToResponse).toList();
     }
 
     @DeleteMapping("/chat/member/")
@@ -85,4 +85,9 @@ public class ChatMemberController {
         return chatO;
     }
 
+    @GetMapping("/chat/member/")
+    public List<Long> getChatIdsByUserName(@RequestParam(value = "username") String username) {
+        return chatMemberService.findChatsByUsername(username)
+                .stream().map(ChatEntity::getId).toList();
+    }
 }

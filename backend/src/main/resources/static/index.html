@@ -19,10 +19,10 @@
                 <div class="form-group">
                     <label for="connect">WebSocket connection:</label>
                     <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                    </button>
+                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect</button>
                 </div>
             </form>
+
         </div>
         <div class="col-md-6">
             <form class="form-inline">
@@ -31,6 +31,17 @@
                     <input type="text" id="name" class="form-control" placeholder="Your name here...">
                 </div>
                 <button id="send" class="btn btn-default" type="submit">Send</button>
+            </form>
+            <!-- Форма присоединения к чату -->
+            <form id="joinChatForm">
+                <input type="text" id="chatId" placeholder="chat ID" required />
+                <button type="submit">connect to chat</button>
+            </form>
+
+            <!-- Форма отправки сообщения -->
+            <form id="sendMessageForm">
+                <input type="text" id="messageContent" placeholder="your message" required />
+                <button type="submit">send message</button>
             </form>
         </div>
     </div>
@@ -43,6 +54,15 @@
                 </tr>
                 </thead>
                 <tbody id="greetings">
+                </tbody>
+            </table>
+            <table id="conversation2" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Greetings</th>
+                </tr>
+                </thead>
+                <tbody id="messegings">
                 </tbody>
             </table>
         </div>
