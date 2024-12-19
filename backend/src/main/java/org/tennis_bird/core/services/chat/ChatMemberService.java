@@ -52,4 +52,9 @@ public class ChatMemberService {
         logger.info("Finding all chats with users {}", username);
         return repository.findChatsByUsername(username);
     }
+
+    public Optional<ChatMemberEntity> findByUsername(String username) {
+        logger.info("Finding by username {}", username);
+        return repository.findByUsername(username);
+    }
 }

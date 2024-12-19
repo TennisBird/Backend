@@ -20,6 +20,7 @@ import org.tennis_bird.core.services.chat.ChatMessageService;
 import org.tennis_bird.core.services.chat.ChatService;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,13 +68,21 @@ public class GreetingController {
         }
     }
     @MessageMapping("/chat/{chatId}")
-    public void sendMessageToChat(@DestinationVariable Long chatId, HelloMessage message) {
-        List<String> usernames = chatMemberService.findByChatId(chatId).stream().map(m->m.getMember()
-                .getUsername()).toList();
+    public void sendMessageToChat(@DestinationVariable Long chatId, ChatMessageDto message) {
+        List<String> usernames = chatMemberService.findByChatId(chatId).stream()
+                .map(m -> m.getMember().getUsername()).toList();
+
+        ChatMessageEntity chatMessage = new ChatMessageEntity();
+        chatMessage.setContent(message.content());
+        chatMessage.setTimestamp(new Date());
+        ChatMemberEntity sender = chatMemberService.findByUsername(message.username()).get();
+        chatMessage.setSender(sender);
+        chatMessage.setChat(chatService.find(chatId).get());
+
+        chatMessageService.create(chatMessage);
 
         for (String username : usernames) {
-            //simpMessagingTemplate.convertAndSendToUser(userId, "/queue/messages/" + chatId, message);
-            simpMessagingTemplate.convertAndSend("/topic/chats/"+username+"/"+chatId, new Greeting("Hello, " + HtmlUtils.htmlEscape(message.name()) + "?"));
+            simpMessagingTemplate.convertAndSend("/topic/chats/" + username + "/" + chatId, chatMessage);
         }
     }
 }

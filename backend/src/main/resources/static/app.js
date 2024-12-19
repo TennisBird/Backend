@@ -69,10 +69,14 @@ function showGreeting(message) {
         console.log(`subscribe to /${name}/topic/chats/${chatId}`);
     }
 
-    function showMessage(chatId, message) {
-        const parsedMessage = JSON.parse(message.body);
-        $(`#messages-${chatId}`).append("<tr><td>" + parsedMessage.content + "</td></tr>");
-    }
+function showMessage(chatId, message) {
+    const parsedMessage = JSON.parse(message.body);
+    const senderName = parsedMessage.sender.member.username;
+    const content = parsedMessage.content;
+
+    // Добавляем имя отправителя и текст сообщения в таблицу
+    $(`#messages-${chatId}`).append("<tr><td><strong>" + senderName + ":</strong> " + content + "</td></tr>");
+}
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
@@ -87,20 +91,21 @@ $(function () {
                 subscribeToChats(chatId); // Подписываемся на чат
             });
 
-            // Обработчик для формы отправки сообщений
             $("#sendMessageForm").on('submit', function (e) {
-                 e.preventDefault();
-                 const chatId = $("#chatId").val();
-                 const name = $("#name").val();
-                 const messageContent = $("#messageContent").val();
+                e.preventDefault();
+                const chatId = $("#chatId").val();
+                const name = $("#name").val();
+                const messageContent = $("#messageContent").val();
 
-                 const message = {
-                      content: messageContent
-                 };
-                 stompClient.publish({
-                      destination: "/app/chat/"+chatId,
-                      body: JSON.stringify({'name': $("#messageContent").val()})
-                 });
-                 $("#messageContent").val(""); // Очищаем поле ввода
-             });
+                const message = {
+                    content: messageContent,
+                    username: name
+                };
+
+                stompClient.publish({
+                    destination: "/app/chat/" + chatId,
+                    body: JSON.stringify(message)
+                });
+                $("#messageContent").val("");
+            });
 });

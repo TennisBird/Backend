@@ -27,5 +27,8 @@ public interface ChatMemberRepository extends JpaRepository<ChatMemberEntity, Lo
 
     @Query("SELECT c FROM ChatMemberEntity cm JOIN cm.chatEntity c WHERE cm.member.username = :username")
     List<ChatEntity> findChatsByUsername(@Param("username") String username);
+
+    @Query("SELECT cm FROM ChatMemberEntity cm WHERE cm.member.username = :username")
+    Optional<ChatMemberEntity> findByUsername(@Param("username") String username);
 }
 
