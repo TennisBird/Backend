@@ -36,10 +36,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String login;
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+
         if (request.getRequestURI().equals("/api/auth/register") ||
                 request.getRequestURI().equals("/api/auth/login") ||
                 pathMatcher.match("/h2-console/**", request.getRequestURI())
-            // || matcher.match("**", request.getContextPath())//TODO now need for chat 
+            //  || pathMatcher.match("**", request.getContextPath())//TODO now need for chat
         ) {
             filterChain.doFilter(request, response);
             return;
