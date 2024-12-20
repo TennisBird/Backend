@@ -1,7 +1,7 @@
-INSERT INTO persons(uuid, login, password, first_name, last_name, username, birth_date, telephone_number, mail_address)
+INSERT INTO persons(uuid, login, password, first_name, last_name, username, birth_date, telephone_number, mail_address, mail_verified)
 VALUES(
 uuid(), 'kate.revinskaya', '12344321XX', 'Ekaterina', 'Revinskaya',
-'kate-revinska', '2005-08-03', '', 'katierevinska05@gmail.com');
+'kate-revinska', '2005-08-03', '', 'katierevinska05@gmail.com', false);
 
 INSERT INTO teams(name) VALUES('tennisBird');
 

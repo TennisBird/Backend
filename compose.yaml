@@ -1,0 +1,7 @@
+services:
+  backend:
+    build: .
+    ports:
+      - 8082:8080
+    stdin_open: true
+    tty: true

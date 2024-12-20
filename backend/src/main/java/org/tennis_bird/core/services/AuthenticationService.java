@@ -1,13 +1,19 @@
 package org.tennis_bird.core.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.tennis_bird.api.PersonsController;
 import org.tennis_bird.api.data.InfoConverter;
-import org.tennis_bird.api.data.JetResponse;
+import org.tennis_bird.api.data.JwtResponse;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.entities.PersonEntity;
+
+import javax.security.auth.login.CredentialException;
 
 @Component
 public class AuthenticationService {
@@ -20,22 +26,20 @@ public class AuthenticationService {
     @Autowired
     InfoConverter converter;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    public JetResponse signUp(PersonInfoRequest request) {
+    public JwtResponse signUp(PersonInfoRequest request) throws CredentialException{
         String token = jwtService.generateToken(converter.requestToEntity(request));
-        JetResponse response = new JetResponse(token);
+        JwtResponse response = new JwtResponse(token);
 
-        // this thing returns some info
-        personService.create(converter.requestToEntity(request));
+        if(personService.create(converter.requestToEntity(request)) == null){
+            throw new CredentialException("Email address is invalid");
+        };
 
         return response;
     }
 
-    public JetResponse signIn(SignInRequest request) throws Exception {
+    public JwtResponse signIn(SignInRequest request) throws Exception {
         PersonEntity user = personService.findByLogin(request.getLogin());
         var jwt = jwtService.generateToken(user);
-        return new JetResponse(jwt);
+        return new JwtResponse(jwt);
     }
 }

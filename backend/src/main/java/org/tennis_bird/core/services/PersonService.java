@@ -13,18 +13,27 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.repositories.PersonRepository;
+import org.tennis_bird.core.services.email.EmailValidationService;
 
 @Component
 @Transactional
 public class PersonService implements UserDetailsService {
 
     @Autowired
+    private EmailValidationService emailValidator;
+    @Autowired
     private PersonRepository repository;
     private static final Logger logger = LogManager.getLogger(PersonService.class.getName());
 
     public PersonEntity create(PersonEntity person) {
         logger.info("create person with uuid {}", person.getUuid());
-        return repository.save(person);
+        // TODO make optional
+        if(emailValidator.isValid(person.getMailAddress())){
+            return repository.save(person);
+        }
+        else{
+            return null;
+        }
     }
 
     public Optional<PersonEntity> update(PersonEntity person) {
@@ -54,6 +63,13 @@ public class PersonService implements UserDetailsService {
 
     public List<PersonEntity> findAll() {
         return repository.findAll();
+    }
+
+    public Optional<PersonEntity> verifyUser(UUID uuid) {
+        logger.info("Verifying user with uuid {}", uuid);
+        Optional<PersonEntity> person = find(uuid);
+        person.ifPresent(personEntity -> personEntity.setEmailVerified(true));
+        return person;
     }
 
     public boolean delete(UUID uuid) {

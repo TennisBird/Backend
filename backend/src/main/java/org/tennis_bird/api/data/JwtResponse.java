@@ -7,15 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class SignInRequest {
-    @JsonAlias
-    private String login;
-    @JsonAlias
-    private String email;
-    @JsonAlias 
-    private String password;
+public class JwtResponse {
+    @JsonAlias("token")
+    private String token;
 }
