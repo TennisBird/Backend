@@ -7,5 +7,6 @@
   "username": "vvvIvan",
   "birthDate": "2005-10-09",
   "mailAddress": "vasiliy_ivanov@gmail.com",
-  "telephoneNumber": "+375294332134"
+  "telephoneNumber": "+375294332134",
+  "avatarPath":"avatars/base.png"
 }

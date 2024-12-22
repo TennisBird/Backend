@@ -25,7 +25,8 @@ public class InfoConverter {
                 personEntity.getUsername(),
                 personEntity.getBirthDate(),
                 personEntity.getMailAddress(),
-                personEntity.getTelephoneNumber());
+                personEntity.getTelephoneNumber(),
+                personEntity.getAvatarPath());
     }
 
     public ChatMemberInfoResponse entityToResponse(ChatMemberEntity memberEntity) {

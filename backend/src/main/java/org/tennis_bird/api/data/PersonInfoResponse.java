@@ -34,4 +34,6 @@ public class PersonInfoResponse {
     private String mailAddress;
     @JsonAlias("telephone_number")
     private String telephoneNumber;
+    @JsonAlias("avatar_path")
+    private String avatarPath;
 }
