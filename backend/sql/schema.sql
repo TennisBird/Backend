@@ -1,5 +1,3 @@
-CREATE DATABASE tennis_bird;
-
 CREATE TABLE tennis_bird.persons (
   uuid  BINARY(16) NOT NULL PRIMARY KEY,
   login VARCHAR(200) NOT NULL,
