@@ -1,7 +1,6 @@
 services:
-  database:
+  mysql_db:
     image: mysql:8.0.32
-    container_name: mysql_db
     expose:
       - "3306"
     volumes:
@@ -17,18 +16,19 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: tennis_bird
     stdin_open: true
+    restart: on-failure:10
     tty: true
   backend:
     build: .
+    depends_on:
+      - mysql_db
     environment:
       MYSQL_HOST: mysql_db
     networks:
       - kazan_network
     ports:
       - "8082:8080"
-    depends_on:
-      - database
 
 networks:
   kazan_network:
-    name: "kazan_networks"
+    driver: bridge
