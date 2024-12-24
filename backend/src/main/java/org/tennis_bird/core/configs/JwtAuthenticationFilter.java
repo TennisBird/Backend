@@ -16,8 +16,11 @@ import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.JwtService;
 import org.tennis_bird.core.services.PersonService;
 
+import lombok.extern.log4j.Log4j2;
+
 
 @Component
+@Log4j2
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -37,9 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String login;
         AntPathMatcher pathMatcher = new AntPathMatcher();
+        
+        logger.info("Got request to: " + request.getRequestURI().toString());
 
-        if (request.getRequestURI().equals("/api/auth/register") ||
-                request.getRequestURI().equals("/api/auth/login") ||
+        if (request.getRequestURI().equals("/register") ||
+                request.getRequestURI().equals("/login") ||
                 pathMatcher.match("/h2-console/**", request.getRequestURI())
             //  || pathMatcher.match("**", request.getContextPath())//TODO now need for chat
         ) {

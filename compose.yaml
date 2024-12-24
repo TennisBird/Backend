@@ -1,6 +1,7 @@
 services:
   mysql_db:
     image: mysql:8.0.32
+    container_name: mysql-db
     expose:
       - "3306"
     volumes:
@@ -16,12 +17,17 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: tennis_bird
     stdin_open: true
-    restart: on-failure:10
     tty: true
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
     build: .
     depends_on:
-      - mysql_db
+      mysql_db:
+        condition: service_healthy
     environment:
       MYSQL_HOST: mysql_db
     networks:
@@ -31,4 +37,4 @@ services:
 
 networks:
   kazan_network:
-    driver: bridge
+    name: "kazan-network"

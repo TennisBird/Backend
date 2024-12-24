@@ -1,26 +1,30 @@
 package org.tennis_bird.api;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.security.auth.login.CredentialException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;/*
+import org.tennis_bird.core.services.email.EmailSendingService;
+*/
 import org.tennis_bird.api.data.JwtResponse;
 import org.tennis_bird.api.data.PersonInfoRequest;
 import org.tennis_bird.api.data.SignInRequest;
 import org.tennis_bird.core.entities.PersonEntity;
 import org.tennis_bird.core.services.AuthenticationService;
-import org.tennis_bird.core.services.PersonService;/*
-import org.tennis_bird.core.services.email.EmailSendingService;
-*/
-import javax.security.auth.login.CredentialException;
-import java.util.Optional;
-import java.util.UUID;
+import org.tennis_bird.core.services.PersonService;
 
 //todo refactor? move to separated microservice(it may not worth it)
 @RestController
-@RequestMapping("/api/auth")
 public class AuthorizationController {
     private static final Logger logger = LogManager.getLogger(AuthorizationController.class.getName());
 

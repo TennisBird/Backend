@@ -1,3 +1,5 @@
+CREATE DATABASE tennis_bird;
+
 CREATE TABLE persons (
   uuid UUID NOT NULL PRIMARY KEY,
   login VARCHAR(200) NOT NULL,
